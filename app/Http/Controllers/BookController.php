@@ -7,12 +7,11 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Obtiene todos los libros
-        $books = Book::all();
-
-        return view('books.index', compact('books'));
+        // Obtiene todos los libros y los ordena por status en orden descendente
+        $books = Book::orderBy('status', 'desc')->paginate(10); // Ordena por status en orden descendente y aplica paginación, 10 libros por página
+        return view('books.index', ['books' => $books]);
     }
 
     public function create()
@@ -49,7 +48,7 @@ class BookController extends Controller
 
     public function edit(Book $book)
     {
-        return view('books.edit', compact('book'));
+        return view('books.edit', ['book' => $book]);
     }
 
     public function update(Request $request, Book $book)
@@ -59,16 +58,25 @@ class BookController extends Controller
             'name' => 'nullable',
             'description' => 'nullable',
             'ISBN' => 'nullable',
-            'status' => 'nullable',
-            'updated_at' => 'nullable',
+            'amount' => 'nullable',
+            'status' => 'required|boolean',
             // Add validation rules for other fields
         ]);
+        // Find the book by ID
+        $book = Book::findOrFail($book->id);
 
         // Update the book
         $book->update($validatedData);
 
         // Redirect to the show page or show success message
-        return redirect()->route('books.show', $book)->with('success', 'Book updated successfully');
+        return redirect()->route('books.index', $book)->with('success', 'El libro se actualizó correctamente');
+    }
+
+    public function softDelete(Book $book)
+    {
+        $book->update(['status' => 0]);
+
+        return redirect()->route('books.index')->with('success', 'El libro ha sido deshabilitado.');
     }
 
     public function destroy(Book $book)

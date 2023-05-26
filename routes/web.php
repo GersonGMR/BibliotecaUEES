@@ -26,6 +26,7 @@ Route::get('/books/{book}', [BookController::class, 'show'])->name('books.show')
 Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
 Route::put('/books/{book}', [BookController::class, 'update'])->name('books.update');
 Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
+Route::put('/books/{book}/soft-delete', [BookController::class, 'softDelete'])->name('books.softDelete');
 
 //Home Controller
 Route::get('/', [HomeController::class, 'index'])->name('home');
