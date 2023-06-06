@@ -3,82 +3,111 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $searchQuery = $request->input('search');
+
+        $users = User::query()
+            ->whereRaw('LOWER(role_id) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereRaw('LOWER(first_name) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereRaw('LOWER(last_name) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereRaw('LOWER(adress) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereRaw('LOWER(phone) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereRaw('LOWER(email) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhere(function ($query) use ($searchQuery) {
+                $lowercaseQuery = strtolower($searchQuery);
+                if ($lowercaseQuery === 'activo') {
+                    $query->where('status', 1); // Search for active status
+                } elseif ($lowercaseQuery === 'inactivo') {
+                    $query->where('status', 0); // Search for inactive status
+                }
+            })
+            ->orWhereRaw('LOWER(created_at) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhere('id', 'like', "%$searchQuery%")
+            ->paginate(10);
+
+        return view('users.index', compact('users'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        // Validar los datos a guardar
+        $validatedData = $request->validate([
+            'role_id' => 'required',
+            'first_name' => 'nullable',
+            'last_name' => 'nullable',
+            'adress' => 'required',
+            'phone' => 'required',
+            'email' => 'nullable',
+            'status' => 'nullable',
+            'password' => 'nullable',
+            'created_at' => 'nullable',
+            'updated_at' => 'nullable',
+            // Add validation rules for other fields
+        ]);
+
+        // Crear un nuevo libro
+        User::create($validatedData);
+
+        // Redirect to the index page or show success message
+        return redirect()->route('users.index')->with('success', 'El libro se insertó correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return view('users.show', compact('user'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        return view('users.edit', ['user' => $user]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        // Validate the request data
+        $validatedData = $request->validate([
+            'role_id' => 'nullable',
+            'first_name' => 'nullable',
+            'last_name' => 'nullable',
+            'adress' => 'nullable',
+            'phone' => 'nullable',
+            'email' => 'nullable',
+            'status' => 'required|boolean',
+            // Add validation rules for other fields
+        ]);
+        // Find the user by ID
+        $user = User::findOrFail($user->id);
+
+        // Update the user
+        $user->update($validatedData);
+
+        // Redirect to the show page or show success message
+        return redirect()->route('users.index', $user)->with('success', 'El usuario se actualizó correctamente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function softDelete(User $user)
     {
-        //
+        $user->update(['status' => 0]);
+
+        return redirect()->route('users.index')->with('success', 'El usuario ha sido deshabilitado.');
+    }
+
+    public function destroy(User $user)
+    {
+        // Delete the user
+        $user->delete();
+
+        // Redirect to the index page or show success message
+        return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente.');
     }
 }

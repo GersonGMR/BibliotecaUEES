@@ -57,33 +57,15 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" onclick="toggleSecondaryMenu(event)">
+          <a class="nav-link text-white " href="{{ route('orders.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
             <span class="nav-link-text ms-1">Préstamos</span>
           </a>
-          <ul class="secondary-menu">
-            <li class="nav-item">
-              <a class="nav-link text-white active bg-gradient-secondary" href="{{ route('orders.index') }}">
-                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i class="material-icons opacity-10">table_view</i>
-                </div>
-                <span class="nav-link-text ms-1">Ordenes</span>
-              </a>
-            </li>
-            <li>
-              <a class="nav-link text-white" href="{{ route('orders.index') }}">
-                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i class="material-icons opacity-10">table_view</i>
-                </div>
-                <span class="nav-link-text ms-1">Detalle ordenes</span>
-              </a>
-            </li>
-          </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="{{ route('users.index') }}">
+          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('users.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">receipt_long</i>
             </div>
@@ -122,7 +104,7 @@
           </div>
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-flex align-items-center">
-
+             
             </li>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
@@ -133,9 +115,9 @@
                 </div>
               </a>
             </li>
-
+        
             <li class="nav-item dropdown pe-2 d-flex align-items-center">
-
+              
               <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
                 <li class="mb-2">
                   <a class="dropdown-item border-radius-md" href="javascript:;">
@@ -211,111 +193,76 @@
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
+      <div class="row">
+      </div>
       <div class="row mt-4">
-        <div class="col-lg-9 col-md-6 mb-md-0 mb-4">
-
-          <div>
-            <a href="{{ route('orders.create') }}" class="btn btn-primary">Ingresar nueva orden</a>
-          </div>
-
-          <div>
-            <form id="searchForm" method="GET" action="{{ route('orders.index') }}">
-              <div class="input-group input-group-outline mb-2">
-                <input type="text" id="searchInput" name="search" class="form-control" placeholder="Buscar ordenes..." aria-label="Search books" style="background-color: white;">
-              </div>
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">Buscar</button>
-              </div>
-
-            </form>
-
-            <!-- INICIA TABLA -->
-            <div class="card">
-              <div class="table-responsive">
-                <div id="bookTable">
-                  <table class="table align-items-center mb-0">
-                    <thead>
-                      <tr>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Código usuario</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nota</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cantidad</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha de reingreso</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estado</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha creacion</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha actualizacion</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Editar</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Eliminar</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @foreach ($orders as $order)
-                      <tr>
-                        <td class="align-middle text-center text-sm">{{ $order->id }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->user_id }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->note }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->quantity }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->return_date }}</td>
-                        <td class="align-middle text-center text-sm">
-                          @if ($order->status)
-                          <span class="badge badge-sm badge-success" style="color: #0ba101;">Activo</span>
-                          @else
-                          <span class="badge badge-sm badge-success" style="color: #e30000;">Inactivo</span>
-                          @endif
-                        </td>
-                        <td class="align-middle text-center text-sm">{{ $order->created_at }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->updated_at }}</td>
-                        <td class="align-middle text-center text-sm">
-                          <!-- Edit button -->
-                          <a href="{{ route('orders.edit', ['order' => $order->id]) }}" class="btn btn-info btn-sm">Editar</a>
-                        </td>
-                        <td class="align-middle text-center text-sm">
-                          <!-- Delete button -->
-                          <form id="delete-form" action="{{ route('orders.softDelete', $order->id) }}" method="POST" style="display: inline">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete()">Eliminar</button>
-                          </form>
-                        </td>
-                      </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
-                </div>
-                <!-- Add the pagination links -->
-                <div class="d-flex justify-content-center mt-3">
-                  {{ $orders->links() }}
-                </div>
+        <div class="col-lg-4 col-md-6 mt-4 mb-4">
+          <div class="card card-plain">
+            <div class="card-header">
+              <div class="card-body">
+                <form role="form" action="{{ route('users.store') }}" method="POST">
+                  @csrf
+                  <label class="form-label">Usuarios</label>
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Rol</label>
+                    <input type="text" class="form-control" id="role_id" name="role_id" required>
+                  </div>
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" >
+                  </div>
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Apellido</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" >
+                  </div>
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Direccion</label>
+                    <input type="text" class="form-control" id="adress" name="adress" >
+                  </div>
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Celular</label>
+                    <input type="text" class="form-control" id="phone" name="phone" >
+                  </div>
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="text" class="form-control" id="email" name="email" >
+                  </div>
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" name="password" >
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Registrar usuario</button>
+                  </div>
+                </form>
               </div>
             </div>
-            <!-- FIN TABLA -->
+          </div>
+        </div>
+      </div>
 
+      <footer class="footer py-4  ">
+        <div class="container-fluid">
+          <div class="row align-items-center justify-content-lg-between">
+            <div class="col-lg-4 mb-lg-0 mb-4">
+              <div class="copyright text-center text-sm text-muted text-lg-start">
+                © <script>
+                  document.write(new Date().getFullYear())
+                </script>,
+                made by
+                <a class="font-weight-bold" target="_blank">Grupo #4</a>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+
+              </ul>
+            </div>
 
           </div>
         </div>
-
-        <footer class="footer py-4  ">
-          <div class="container-fluid">
-            <div class="row align-items-center justify-content-lg-between">
-              <div class="col-lg-4 mb-lg-0 mb-4">
-                <div class="copyright text-center text-sm text-muted text-lg-start">
-                  © <script>
-                    document.write(new Date().getFullYear())
-                  </script>,
-                  made by
-                  <a class="font-weight-bold" target="_blank">Grupo #4</a>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-
-                </ul>
-              </div>
-
-            </div>
-          </div>
-        </footer>
-      </div>
+      </footer>
+    </div>
   </main>
   <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
@@ -384,33 +331,6 @@
   <script src="{{ asset('js/plugins/perfect-scrollbar.min.js') }}"></script>
   <script src="{{ asset('js/plugins/smooth-scrollbar.min.js') }}"></script>
   <script src="{{ asset('js/plugins/chartjs.min.js') }}"></script>
-  <style>
-    .secondary-menu {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .secondary-menu li {
-      display: block;
-    }
-  </style>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    function toggleSecondaryMenu(event) {
-      event.preventDefault();
-      $(event.target).toggleClass('show-menu');
-    }
-  </script>
-  <script>
-    function confirmDelete() {
-      if (confirm('¿Estás seguro de que deseas eliminar este libro?')) {
-        return true; // Proceed with form submission
-      } else {
-        return false; // Cancel form submission
-      }
-    }
-  </script>
   <script>
     var ctx = document.getElementById("chart-bars").getContext("2d");
 

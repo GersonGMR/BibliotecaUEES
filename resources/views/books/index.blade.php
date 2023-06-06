@@ -57,7 +57,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/tables.html">
+          <a class="nav-link text-white " href="{{ route('orders.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
@@ -65,7 +65,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/billing.html">
+          <a class="nav-link text-white " href="{{ route('users.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">receipt_long</i>
             </div>
@@ -73,7 +73,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('books.create') }}">
+          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('books.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">view_in_ar</i>
             </div>
@@ -104,7 +104,7 @@
           </div>
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-flex align-items-center">
-
+             
             </li>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
@@ -115,9 +115,9 @@
                 </div>
               </a>
             </li>
-
+        
             <li class="nav-item dropdown pe-2 d-flex align-items-center">
-
+              
               <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
                 <li class="mb-2">
                   <a class="dropdown-item border-radius-md" href="javascript:;">
@@ -200,59 +200,72 @@
             <a href="{{ route('books.create') }}" class="btn btn-primary">Ingresar nuevo libro</a>
           </div>
 
+          <div>
+            <form id="searchForm" method="GET" action="{{ route('books.index') }}">
+              <div class="input-group input-group-outline mb-2">
+                <input type="text" id="searchInput" name="search" class="form-control" placeholder="Buscar libros..." aria-label="Search books" style="background-color: white;">
+                </div>
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit">Buscar</button>
+                </div>
+              
+            </form>
+
           <!-- INICIA TABLA -->
           <div class="card">
             <div class="table-responsive">
-              <table class="table align-items-center mb-0">
-                <thead>
-                  <tr>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Descripcion</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Imagen</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ISBN</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cantidad</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estado</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha creacion</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha actualizacion</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Editar</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Eliminar</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach ($books as $book)
-                  <tr>
-                    <td class="align-middle text-center text-sm">{{ $book->id }}</td>
-                    <td class="align-middle text-center text-sm">{{ $book->name }}</td>
-                    <td class="align-middle text-center text-sm">{{ $book->description }}</td>
-                    <td class="align-middle text-center text-sm">{{ $book->img }}</td>
-                    <td class="align-middle text-center text-sm">{{ $book->ISBN }}</td>
-                    <td class="align-middle text-center text-sm">{{ $book->amount }}</td>
-                    <td class="align-middle text-center text-sm">
-                      @if ($book->status)
-                      <span class="badge badge-sm badge-success" style="color: #0ba101;">Activo</span>
-                      @else
-                      <span class="badge badge-sm badge-success" style="color: #e30000;">Inactivo</span>
-                      @endif
-                    </td>
-                    <td class="align-middle text-center text-sm">{{ $book->created_at }}</td>
-                    <td class="align-middle text-center text-sm">{{ $book->updated_at }}</td>
-                    <td class="align-middle text-center text-sm">
-                      <!-- Edit button -->
-                      <a href="{{ route('books.edit', ['book' => $book->id]) }}" class="btn btn-info btn-sm">Editar</a>
-                    </td>
-                    <td class="align-middle text-center text-sm">
-                      <!-- Delete button -->
-                      <form id="delete-form" action="{{ route('books.softDelete', $book->id) }}" method="POST" style="display: inline">
-                        @csrf
-                        @method('PUT')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete()">Eliminar</button>
-                      </form>
-                    </td>
-                  </tr>
-                  @endforeach
-                </tbody>
-              </table>
+              <div id="bookTable">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Descripcion</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Imagen</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ISBN</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cantidad</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estado</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha creacion</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha actualizacion</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Editar</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Eliminar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach ($books as $book)
+                    <tr>
+                      <td class="align-middle text-center text-sm">{{ $book->id }}</td>
+                      <td class="align-middle text-center text-sm">{{ $book->name }}</td>
+                      <td class="align-middle text-center text-sm">{{ $book->description }}</td>
+                      <td class="align-middle text-center text-sm">{{ $book->img }}</td>
+                      <td class="align-middle text-center text-sm">{{ $book->ISBN }}</td>
+                      <td class="align-middle text-center text-sm">{{ $book->amount }}</td>
+                      <td class="align-middle text-center text-sm">
+                        @if ($book->status)
+                        <span class="badge badge-sm badge-success" style="color: #0ba101;">Activo</span>
+                        @else
+                        <span class="badge badge-sm badge-success" style="color: #e30000;">Inactivo</span>
+                        @endif
+                      </td>
+                      <td class="align-middle text-center text-sm">{{ $book->created_at }}</td>
+                      <td class="align-middle text-center text-sm">{{ $book->updated_at }}</td>
+                      <td class="align-middle text-center text-sm">
+                        <!-- Edit button -->
+                        <a href="{{ route('books.edit', ['book' => $book->id]) }}" class="btn btn-info btn-sm">Editar</a>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <!-- Delete button -->
+                        <form id="delete-form" action="{{ route('books.softDelete', $book->id) }}" method="POST" style="display: inline">
+                          @csrf
+                          @method('PUT')
+                          <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete()">Eliminar</button>
+                        </form>
+                      </td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
               <!-- Add the pagination links -->
               <div class="d-flex justify-content-center mt-3">
                 {{ $books->links() }}
@@ -364,6 +377,7 @@
       }
     }
   </script>
+
   <script>
     var ctx = document.getElementById("chart-bars").getContext("2d");
 

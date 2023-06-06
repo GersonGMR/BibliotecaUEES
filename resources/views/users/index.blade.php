@@ -57,33 +57,15 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" onclick="toggleSecondaryMenu(event)">
+          <a class="nav-link text-white" href="{{ route('orders.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
             <span class="nav-link-text ms-1">Préstamos</span>
           </a>
-          <ul class="secondary-menu">
-            <li class="nav-item">
-              <a class="nav-link text-white active bg-gradient-secondary" href="{{ route('orders.index') }}">
-                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i class="material-icons opacity-10">table_view</i>
-                </div>
-                <span class="nav-link-text ms-1">Ordenes</span>
-              </a>
-            </li>
-            <li>
-              <a class="nav-link text-white" href="{{ route('orders.index') }}">
-                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i class="material-icons opacity-10">table_view</i>
-                </div>
-                <span class="nav-link-text ms-1">Detalle ordenes</span>
-              </a>
-            </li>
-          </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="{{ route('users.index') }}">
+          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('users.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">receipt_long</i>
             </div>
@@ -212,16 +194,16 @@
     <!-- End Navbar -->
     <div class="container-fluid py-4">
       <div class="row mt-4">
-        <div class="col-lg-9 col-md-6 mb-md-0 mb-4">
+        <div class="col-lg-10 col-md-6 mb-md-0 mb-4">
 
           <div>
-            <a href="{{ route('orders.create') }}" class="btn btn-primary">Ingresar nueva orden</a>
+            <a href="{{ route('users.create') }}" class="btn btn-primary">Ingresar nuevo usuario</a>
           </div>
 
           <div>
-            <form id="searchForm" method="GET" action="{{ route('orders.index') }}">
+            <form id="searchForm" method="GET" action="{{ route('users.index') }}">
               <div class="input-group input-group-outline mb-2">
-                <input type="text" id="searchInput" name="search" class="form-control" placeholder="Buscar ordenes..." aria-label="Search books" style="background-color: white;">
+                <input type="text" id="searchInput" name="search" class="form-control" placeholder="Buscar usuarios..." aria-label="Search books" style="background-color: white;">
               </div>
               <div class="input-group-append">
                 <button class="btn btn-primary" type="submit">Buscar</button>
@@ -237,41 +219,45 @@
                     <thead>
                       <tr>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Código usuario</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nota</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cantidad</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha de reingreso</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Rol</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Apellido</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Direccion</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Celular</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estado</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha creacion</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha actualizacion</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Creado</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Modificado</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Editar</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Eliminar</th>
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach ($orders as $order)
+                      @foreach ($users as $user)
                       <tr>
-                        <td class="align-middle text-center text-sm">{{ $order->id }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->user_id }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->note }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->quantity }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->return_date }}</td>
+                        <td class="align-middle text-center text-sm">{{ $user->id }}</td>
+                        <td class="align-middle text-center text-sm">{{ $user->role_id }}</td>
+                        <td class="align-middle text-center text-sm">{{ $user->first_name }}</td>
+                        <td class="align-middle text-center text-sm">{{ $user->last_name }}</td>
+                        <td class="align-middle text-center text-sm">{{ $user->adress }}</td>
+                        <td class="align-middle text-center text-sm">{{ $user->phone }}</td>
+                        <td class="align-middle text-center text-sm">{{ $user->email }}</td>
                         <td class="align-middle text-center text-sm">
-                          @if ($order->status)
+                          @if ($user->status)
                           <span class="badge badge-sm badge-success" style="color: #0ba101;">Activo</span>
                           @else
                           <span class="badge badge-sm badge-success" style="color: #e30000;">Inactivo</span>
                           @endif
                         </td>
-                        <td class="align-middle text-center text-sm">{{ $order->created_at }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->updated_at }}</td>
+                        <td class="align-middle text-center text-sm">{{ $user->created_at }}</td>
+                        <td class="align-middle text-center text-sm">{{ $user->updated_at }}</td>
                         <td class="align-middle text-center text-sm">
                           <!-- Edit button -->
-                          <a href="{{ route('orders.edit', ['order' => $order->id]) }}" class="btn btn-info btn-sm">Editar</a>
+                          <a href="{{ route('users.edit', ['user' => $user->id]) }}" class="btn btn-info btn-sm">Editar</a>
                         </td>
                         <td class="align-middle text-center text-sm">
                           <!-- Delete button -->
-                          <form id="delete-form" action="{{ route('orders.softDelete', $order->id) }}" method="POST" style="display: inline">
+                          <form id="delete-form" action="{{ route('users.softDelete', $user->id) }}" method="POST" style="display: inline">
                             @csrf
                             @method('PUT')
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete()">Eliminar</button>
@@ -284,7 +270,7 @@
                 </div>
                 <!-- Add the pagination links -->
                 <div class="d-flex justify-content-center mt-3">
-                  {{ $orders->links() }}
+                  {{ $users->links() }}
                 </div>
               </div>
             </div>
@@ -384,24 +370,6 @@
   <script src="{{ asset('js/plugins/perfect-scrollbar.min.js') }}"></script>
   <script src="{{ asset('js/plugins/smooth-scrollbar.min.js') }}"></script>
   <script src="{{ asset('js/plugins/chartjs.min.js') }}"></script>
-  <style>
-    .secondary-menu {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .secondary-menu li {
-      display: block;
-    }
-  </style>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    function toggleSecondaryMenu(event) {
-      event.preventDefault();
-      $(event.target).toggleClass('show-menu');
-    }
-  </script>
   <script>
     function confirmDelete() {
       if (confirm('¿Estás seguro de que deseas eliminar este libro?')) {

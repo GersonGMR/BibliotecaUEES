@@ -7,11 +7,35 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    public function index(Request $request)
+    /*public function index1(Request $request)
     {
         // Obtiene todos los libros y los ordena por status en orden descendente
         $books = Book::orderBy('status', 'desc')->paginate(10); // Ordena por status en orden descendente y aplica paginación, 10 libros por página
         return view('books.index', ['books' => $books]);
+    }
+    */
+    public function index(Request $request)
+    {
+        $searchQuery = $request->input('search');
+
+        $books = Book::query()
+            ->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereRaw('LOWER(description) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereRaw('LOWER(isbn) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhere(function ($query) use ($searchQuery) {
+                $lowercaseQuery = strtolower($searchQuery);
+                if ($lowercaseQuery === 'activo') {
+                    $query->where('status', 1); // Search for active status
+                } elseif ($lowercaseQuery === 'inactivo') {
+                    $query->where('status', 0); // Search for inactive status
+                }
+            })
+            ->orWhereRaw('LOWER(created_at) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereRaw('LOWER(amount) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhere('id', 'like', "%$searchQuery%")
+            ->paginate(10);
+
+        return view('books.index', compact('books'));
     }
 
     public function create()

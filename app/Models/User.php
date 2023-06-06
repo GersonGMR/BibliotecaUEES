@@ -18,4 +18,15 @@ class User extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    protected $fillable = [
+        'role_id',
+        'first_name',
+        'last_name',
+        'adress',
+        'phone',
+        'email',
+        'password',
+        'status'
+    ];
 }

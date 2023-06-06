@@ -18,4 +18,12 @@ class Order extends Model
     {
         return $this->hasMany(OrderDetail::class);
     }
+
+    protected $fillable = [
+        'user_id',
+        'note',
+        'quantity',
+        'return_date',
+        'status'
+    ];
 }

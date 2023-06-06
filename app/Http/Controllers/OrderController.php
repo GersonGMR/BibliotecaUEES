@@ -2,83 +2,106 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $searchQuery = $request->input('search');
+
+        $orders = Order::query()
+            ->whereRaw('LOWER(user_id) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereRaw('LOWER(note) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereRaw('LOWER(quantity) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereRaw('LOWER(return_date) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhere(function ($query) use ($searchQuery) {
+                $lowercaseQuery = strtolower($searchQuery);
+                if ($lowercaseQuery === 'activo') {
+                    $query->where('status', 1); // Search for active status
+                } elseif ($lowercaseQuery === 'inactivo') {
+                    $query->where('status', 0); // Search for inactive status
+                }
+            })
+            ->orWhereRaw('LOWER(created_at) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhere('id', 'like', "%$searchQuery%")
+            ->paginate(10);
+
+        return view('orders.index', compact('orders'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('orders.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        // Validar los datos a guardar
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'description' => 'nullable',
+            'img' => 'nullable',
+            'ISBN' => 'required',
+            'amount' => 'required',
+            'status' => 'nullable',
+            'created_at' => 'nullable',
+            'updated_at' => 'nullable',
+            // Add validation rules for other fields
+        ]);
+
+        // Crear un nuevo libro
+        Order::create($validatedData);
+
+        // Redirect to the index page or show success message
+        return redirect()->route('orders.index')->with('success', 'El libro se insertó correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Order $order)
     {
-        //
+        return view('orders.show', compact('order'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(Order $order)
     {
-        //
+        return view('orders.edit', ['order' => $order]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, Order $order)
     {
-        //
+        // Validate the request data
+        $validatedData = $request->validate([
+            'name' => 'nullable',
+            'description' => 'nullable',
+            'ISBN' => 'nullable',
+            'amount' => 'nullable',
+            'status' => 'required|boolean',
+            // Add validation rules for other fields
+        ]);
+        // Find the order by ID
+        $order = Order::findOrFail($order->id);
+
+        // Update the order
+        $order->update($validatedData);
+
+        // Redirect to the show page or show success message
+        return redirect()->route('orders.index', $order)->with('success', 'El libro se actualizó correctamente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function softDelete(Order $order)
     {
-        //
+        $order->update(['status' => 0]);
+
+        return redirect()->route('orders.index')->with('success', 'El libro ha sido deshabilitado.');
+    }
+
+    public function destroy(Order $order)
+    {
+        // Delete the order
+        $order->delete();
+
+        // Redirect to the index page or show success message
+        return redirect()->route('orders.index')->with('success', 'Libro eliminado correctamente.');
     }
 }
