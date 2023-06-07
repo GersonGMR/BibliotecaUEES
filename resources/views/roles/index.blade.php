@@ -73,7 +73,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="{{ route('roles.index') }}">
+          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('roles.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">receipt_long</i>
             </div>
@@ -81,7 +81,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('books.index') }}">
+          <a class="nav-link text-white" href="{{ route('books.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">view_in_ar</i>
             </div>
@@ -201,55 +201,80 @@
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
-      <div class="row">
-      </div>
       <div class="row mt-4">
-        <div class="col-lg-4 col-md-6 mt-4 mb-4">
-          <div class="card card-plain">
-            <div class="card-header">
-              <div class="card-body">
-                <form id="updateForm" role="form" action="{{ route('orders.update', ['user' => $user->id]) }}" method="POST">
-                  @csrf
-                  @method('PUT')
-                  <label class="form-label" style="font-size: large;">Usuarios</label>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Rol</label>
-                    <input type="text" class="form-control" id="role_id" name="role_id" value="{{ $user->role_id }}">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Nombre</label>
-                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ $user->first_name }}">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Apellido</label>
-                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $user->last_name }}">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Direccion</label>
-                    <input type="text" class="form-control" id="adress" name="adress" value="{{ $user->adress }}">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Celular</label>
-                    <input type="text" class="form-control" id="phone" name="phone" value="{{ $user->phone }}">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Email</label>
-                    <input type="text" class="form-control" id="email" name="email" value="{{ $user->email }}">
-                  </div>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="statusSwitch" {{ $user->status ? 'checked' : '' }}>
-                    <label class="form-check-label" for="statusSwitch">Estado de usuario</label>
-                  </div>
+        <div class="col-lg-11 col-md-6 mb-md-0 mb-4">
 
-                  <!-- Hidden input field for the status value -->
-                  <input type="hidden" name="status" id="status" value="{{ $user->status }}">
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Actualizar usuario</button>
-                  </div>
-                </form>
+          <div>
+            <a href="{{ route('roles.create') }}" class="btn btn-primary">Ingresar nuevo rol</a>
+          </div>
+
+          <div>
+            <form id="searchForm" method="GET" action="{{ route('roles.index') }}">
+              <div class="input-group input-group-outline mb-2">
+                <input type="text" id="searchInput" name="search" class="form-control" placeholder="Buscar roles..." aria-label="Search roles" style="background-color: white;">
+                </div>
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit">Buscar</button>
+                </div>
+              
+            </form>
+
+          <!-- INICIA TABLA -->
+          <div class="card">
+            <div class="table-responsive">
+              <div id="bookTable">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estado</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha creacion</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha actualizacion</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Editar</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Eliminar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach ($roles as $role)
+                    <tr>
+                      <td class="align-middle text-center text-sm">{{ $role->id }}</td>
+                      <td class="align-middle text-center text-sm">{{ $role->role_name }}</td>
+                      <td class="align-middle text-center text-sm">
+                        @if ($role->status)
+                        <span class="badge badge-sm badge-success" style="color: #0ba101;">Activo</span>
+                        @else
+                        <span class="badge badge-sm badge-success" style="color: #e30000;">Inactivo</span>
+                        @endif
+                      </td>
+                      <td class="align-middle text-center text-sm">{{ $role->created_at }}</td>
+                      <td class="align-middle text-center text-sm">{{ $role->updated_at }}</td>
+                      <td class="align-middle text-center text-sm">
+                        <!-- Edit button -->
+                        <a href="{{ route('roles.edit', ['role' => $role->id]) }}" class="btn btn-info btn-sm">Editar</a>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <!-- Delete button -->
+                        <form id="delete-form" action="{{ route('roles.softDelete', $role->id) }}" method="POST" style="display: inline">
+                          @csrf
+                          @method('PUT')
+                          <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete()">Eliminar</button>
+                        </form>
+                      </td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+              <!-- Add the pagination links -->
+              <div class="d-flex justify-content-center mt-3">
+                {{ $roles->links() }}
               </div>
             </div>
           </div>
+          <!-- FIN TABLA -->
+
+
         </div>
       </div>
 
@@ -338,40 +363,21 @@
     </div>
   </div>
   <!--   Core JS Files   -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <script>
-    $(document).ready(function() {
-      console.log('Document ready!');
-      $('#updateForm').submit(function(e) {
-        e.preventDefault(); // Prevent default form submission
-        console.log('Form submitted!');
-        var status = $('#statusSwitch').prop('checked') ? 1 : 0;
-        console.log('Status:', status);
-        $('input[name="status"]').val(status); // Update the hidden input value
-        // Submit the form using AJAX
-        $.ajax({
-          url: $(this).attr('action'),
-          type: 'POST',
-          data: $(this).serialize(),
-          success: function(response) {
-            console.log('AJAX success response:', response);
-            window.location.href = "{{ route('orders.index') }}";
-            // Handle success response, e.g., redirect or display a success message
-          },
-          error: function(xhr) {
-            console.log('AJAX error:', xhr);
-            // Handle error response, e.g., display an error message
-          }
-        });
-      });
-    });
-  </script>
   <script src="{{ asset('js/core/popper.min.js') }}"></script>
   <script src="{{ asset('js/core/bootstrap.min.js') }}"></script>
   <script src="{{ asset('js/plugins/perfect-scrollbar.min.js') }}"></script>
   <script src="{{ asset('js/plugins/smooth-scrollbar.min.js') }}"></script>
   <script src="{{ asset('js/plugins/chartjs.min.js') }}"></script>
+  <script>
+    function confirmDelete() {
+      if (confirm('¿Estás seguro de que deseas eliminar este libro?')) {
+        return true; // Proceed with form submission
+      } else {
+        return false; // Cancel form submission
+      }
+    }
+  </script>
+
   <script>
     var ctx = document.getElementById("chart-bars").getContext("2d");
 

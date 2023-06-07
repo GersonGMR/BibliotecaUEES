@@ -73,7 +73,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="{{ route('roles.index') }}">
+          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('roles.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">receipt_long</i>
             </div>
@@ -81,7 +81,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('books.index') }}">
+          <a class="nav-link text-white " href="{{ route('books.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">view_in_ar</i>
             </div>
@@ -208,43 +208,23 @@
           <div class="card card-plain">
             <div class="card-header">
               <div class="card-body">
-                <form id="updateForm" role="form" action="{{ route('orders.update', ['user' => $user->id]) }}" method="POST">
+                <form id="updateForm" role="form" action="{{ route('roles.update', ['role' => $role->id]) }}" method="POST">
                   @csrf
                   @method('PUT')
-                  <label class="form-label" style="font-size: large;">Usuarios</label>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Rol</label>
-                    <input type="text" class="form-control" id="role_id" name="role_id" value="{{ $user->role_id }}">
-                  </div>
+                  <label class="form-label" style="font-size: large;">Roles</label>
                   <div class="input-group input-group-static mb-4">
                     <label>Nombre</label>
-                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ $user->first_name }}">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Apellido</label>
-                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $user->last_name }}">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Direccion</label>
-                    <input type="text" class="form-control" id="adress" name="adress" value="{{ $user->adress }}">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Celular</label>
-                    <input type="text" class="form-control" id="phone" name="phone" value="{{ $user->phone }}">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Email</label>
-                    <input type="text" class="form-control" id="email" name="email" value="{{ $user->email }}">
+                    <input type="text" class="form-control" id="role_name" name="role_name" value="{{ $role->role_name }}">
                   </div>
                   <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="statusSwitch" {{ $user->status ? 'checked' : '' }}>
-                    <label class="form-check-label" for="statusSwitch">Estado de usuario</label>
+                    <input class="form-check-input" type="checkbox" id="statusSwitch" {{ $role->status ? 'checked' : '' }}>
+                    <label class="form-check-label" for="statusSwitch">Estado de rol</label>
                   </div>
 
                   <!-- Hidden input field for the status value -->
-                  <input type="hidden" name="status" id="status" value="{{ $user->status }}">
+                  <input type="hidden" name="status" id="status" value="{{ $role->status }}">
                   <div class="text-center">
-                    <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Actualizar usuario</button>
+                    <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Actualizar rol</button>
                   </div>
                 </form>
               </div>
@@ -356,7 +336,7 @@
           data: $(this).serialize(),
           success: function(response) {
             console.log('AJAX success response:', response);
-            window.location.href = "{{ route('orders.index') }}";
+            window.location.href = "{{ route('roles.index') }}";
             // Handle success response, e.g., redirect or display a success message
           },
           error: function(xhr) {

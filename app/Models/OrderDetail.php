@@ -18,4 +18,10 @@ class OrderDetail extends Model
     {
         return $this->belongsTo(Book::class);
     }
+
+    protected $fillable = [
+        'order_id',
+        'book_id',
+        'amount'
+    ];
 }

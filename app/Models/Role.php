@@ -13,4 +13,9 @@ class Role extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    protected $fillable = [
+        'role_name',
+        'status'
+    ];
 }

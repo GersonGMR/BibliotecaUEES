@@ -73,7 +73,7 @@
               </a>
             </li>
             <li>
-              <a class="nav-link text-white" href="{{ route('orders.index') }}">
+              <a class="nav-link text-white" href="{{ route('ordersDetails.index') }}">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="material-icons opacity-10">table_view</i>
                 </div>
@@ -88,6 +88,14 @@
               <i class="material-icons opacity-10">receipt_long</i>
             </div>
             <span class="nav-link-text ms-1">Usuarios</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="{{ route('roles.index') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Roles</span>
           </a>
         </li>
         <li class="nav-item">
@@ -213,11 +221,6 @@
     <div class="container-fluid py-4">
       <div class="row mt-4">
         <div class="col-lg-9 col-md-6 mb-md-0 mb-4">
-
-          <div>
-            <a href="{{ route('orders.create') }}" class="btn btn-primary">Ingresar nueva orden</a>
-          </div>
-
           <div>
             <form id="searchForm" method="GET" action="{{ route('orders.index') }}">
               <div class="input-group input-group-outline mb-2">

@@ -3,82 +3,92 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\OrderDetail;
 
 class OrderDetailController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $searchQuery = $request->input('search');
+
+        $ordersdetails = OrderDetail::query()
+            ->whereRaw('LOWER(order_id) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereRaw('LOWER(book_id) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereRaw('LOWER(amount) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereRaw('LOWER(created_at) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhere('id', 'like', "%$searchQuery%")
+            ->paginate(10);
+
+        return view('ordersDetails.index', compact('ordersdetails'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('ordersDetails.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        // Validar los datos a guardar
+        $validatedData = $request->validate([
+            'order_id' => 'required',
+            'book_id' => 'required',
+            'amount' => 'required',
+            'created_at' => 'nullable',
+            'updated_at' => 'nullable',
+            // Add validation rules for other fields
+        ]);
+
+        // Crear un nuevo libro
+        OrderDetail::create($validatedData);
+
+        // Redirect to the index page or show success message
+        return redirect()->route('ordersDetails.index')->with('success', 'La orden se insertó correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(OrderDetail $orderdetail)
     {
-        //
+        return view('ordersDetails.show', compact('orderdetail'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(OrderDetail $orderdetail)
     {
-        //
+        return view('ordersDetails.edit', ['orderdetail' => $orderdetail]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, OrderDetail $orderdetail)
     {
-        //
+        // Validate the request data
+        $validatedData = $request->validate([
+            'order_id' => 'nullable',
+            'book_id' => 'nullable',
+            'amount' => 'nullable',
+            // Add validation rules for other fields
+        ]);
+        // Find the user by ID
+        $orderdetail = OrderDetail::findOrFail($orderdetail->id);
+
+        // Update the user
+        $orderdetail->update($validatedData);
+
+        // Redirect to the show page or show success message
+        return redirect()->route('ordersDetails.index', $orderdetail)->with('success', 'La orden se actualizó correctamente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function softDelete(OrderDetail $orderdetail)
     {
-        //
+        $orderdetail->update(['status' => 0]);
+
+        return redirect()->route('ordersDetails.index')->with('success', 'La orden ha sido deshabilitada.');
     }
+
+    public function destroy(OrderDetail $orderdetail)
+    {
+        // Delete the user
+        $orderdetail->delete();
+
+        // Redirect to the index page or show success message
+        return redirect()->route('ordersDetails.index')->with('success', 'Orden eliminado correctamente.');
+    }
+
 }

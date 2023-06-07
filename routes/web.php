@@ -5,6 +5,8 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderDetailController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,3 +57,25 @@ Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.e
 Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
 Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 Route::put('/users/{user}/soft-delete', [UserController::class, 'softDelete'])->name('users.softDelete');
+
+// Route definitions for the OrderDetail entity
+Route::get('/ordersDetails/search', 'OrderDetailController@search')->name('ordersDetails.search');
+Route::get('/ordersDetails', [OrderDetailController::class, 'index'])->name('ordersDetails.index');
+Route::get('/ordersDetails/create', [OrderDetailController::class, 'create'])->name('ordersDetails.create');
+Route::post('/ordersDetails', [OrderDetailController::class, 'store'])->name('ordersDetails.store');
+Route::get('/ordersDetails/{orderdetail}', [OrderDetailController::class, 'show'])->name('ordersDetails.show');
+Route::get('/ordersDetails/{orderdetail}/edit', [OrderDetailController::class, 'edit'])->name('ordersDetails.edit');
+Route::put('/ordersDetails/{orderdetail}', [OrderDetailController::class, 'update'])->name('ordersDetails.update');
+Route::delete('/ordersDetails/{orderdetail}', [OrderDetailController::class, 'destroy'])->name('ordersDetails.destroy');
+Route::put('/ordersDetails/{orderdetail}/soft-delete', [OrderDetailController::class, 'softDelete'])->name('ordersDetails.softDelete');
+
+// Route definitions for the Roles entity
+Route::get('/roles/search', 'RoleController@search')->name('roles.search');
+Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+Route::get('/roles/{role}', [RoleController::class, 'show'])->name('roles.show');
+Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+Route::put('/roles/{role}/soft-delete', [RoleController::class, 'softDelete'])->name('roles.softDelete');

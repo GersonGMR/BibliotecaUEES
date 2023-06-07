@@ -65,7 +65,7 @@
                     </a>
                     <ul class="secondary-menu">
                         <li class="nav-item">
-                            <a class="nav-link text-white active bg-gradient-secondary" href="{{ route('orders.index') }}">
+                            <a class="nav-link text-white" href="{{ route('orders.index') }}">
                                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="material-icons opacity-10">table_view</i>
                                 </div>
@@ -73,7 +73,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="nav-link text-white" href="{{ route('orders.index') }}">
+                            <a class="nav-link text-white active bg-gradient-secondary" href="{{ route('ordersDetails.index') }}">
                                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="material-icons opacity-10">table_view</i>
                                 </div>
@@ -219,60 +219,96 @@
         </nav>
         <!-- End Navbar -->
         <div class="container-fluid py-4">
-            <div class="row">
-            </div>
             <div class="row mt-4">
-                <div class="col-lg-4 col-md-6 mt-4 mb-4">
-                    <div class="card card-plain">
-                        <div class="card-header">
-                            <div class="card-body">
-                                <form role="form" action="{{ route('orders.store') }}" method="POST">
-                                    @csrf
-                                    <label class="form-label">Ordenes</label>
-                                    <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label">Usuario</label>
-                                        <input type="text" class="form-control" id="user_id" name="user_id" required>
-                                    </div>
-                                    <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label">Nota</label>
-                                        <input type="text" class="form-control" id="note" name="note" rows="3" required>
-                                    </div>
-                                    <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label">Cantidad</label>
-                                        <input type="text" class="form-control" id="quantity" name="quantity" required>
-                                    </div>
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Registrar orden</button>
-                                    </div>
-                                </form>
+                <div class="col-lg-11 col-md-6 mb-md-0 mb-4">
+                    <div>
+                        <form id="searchForm" method="GET" action="{{ route('ordersDetails.index') }}">
+                            <div class="input-group input-group-outline mb-2">
+                                <input type="text" id="searchInput" name="search" class="form-control" placeholder="Buscar ordenes..." aria-label="Search orders" style="background-color: white;">
+                            </div>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">Buscar</button>
+                            </div>
+
+                        </form>
+
+                        <!-- INICIA TABLA -->
+                        <div class="card">
+                            <div class="table-responsive">
+                                <div id="bookTable">
+                                    <table class="table align-items-center mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id Orden</th>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id Libro</th>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cantidad</th>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha creacion</th>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha actualizacion</th>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Editar</th>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($ordersdetails as $orderdetail)
+                                            <tr>
+                                                <td class="align-middle text-center text-sm">{{ $orderdetail->id }}</td>
+                                                <td class="align-middle text-center text-sm">{{ $orderdetail->order_id }}</td>
+                                                <td class="align-middle text-center text-sm">{{ $orderdetail->book_id }}</td>
+                                                <td class="align-middle text-center text-sm">{{ $orderdetail->amount }}</td>
+                                                <td class="align-middle text-center text-sm">{{ $orderdetail->created_at }}</td>
+                                                <td class="align-middle text-center text-sm">{{ $orderdetail->updated_at }}</td>
+                                                <td class="align-middle text-center text-sm">
+                                                    <!-- Edit button -->
+                                                    <a href="{{ route('ordersDetails.edit', ['orderdetail' => $orderdetail->id]) }}" class="btn btn-info btn-sm">Editar</a>
+                                                </td>
+                                                <td class="align-middle text-center text-sm">
+                                                    <!-- Delete button -->
+                                                    <form id="delete-form" action="{{ route('ordersDetails.softDelete', $orderdetail->id) }}" method="POST" style="display: inline">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete()">Eliminar</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- Add the pagination links -->
+                                <div class="d-flex justify-content-center mt-3">
+                                    {{ $ordersdetails->links() }}
+                                </div>
                             </div>
                         </div>
+                        <!-- FIN TABLA -->
+
+
                     </div>
                 </div>
+
+                <footer class="footer py-4  ">
+                    <div class="container-fluid">
+                        <div class="row align-items-center justify-content-lg-between">
+                            <div class="col-lg-4 mb-lg-0 mb-4">
+                                <div class="copyright text-center text-sm text-muted text-lg-start">
+                                    © <script>
+                                        document.write(new Date().getFullYear())
+                                    </script>,
+                                    made by
+                                    <a class="font-weight-bold" target="_blank">Grupo #4</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </footer>
             </div>
-
-            <footer class="footer py-4  ">
-                <div class="container-fluid">
-                    <div class="row align-items-center justify-content-lg-between">
-                        <div class="col-lg-4 mb-lg-0 mb-4">
-                            <div class="copyright text-center text-sm text-muted text-lg-start">
-                                © <script>
-                                    document.write(new Date().getFullYear())
-                                </script>,
-                                made by
-                                <a class="font-weight-bold" target="_blank">Grupo #4</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-
-                            </ul>
-                        </div>
-
-                    </div>
-                </div>
-            </footer>
-        </div>
     </main>
     <div class="fixed-plugin">
         <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
@@ -341,6 +377,15 @@
     <script src="{{ asset('js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('js/plugins/smooth-scrollbar.min.js') }}"></script>
     <script src="{{ asset('js/plugins/chartjs.min.js') }}"></script>
+    <script>
+        function confirmDelete() {
+            if (confirm('¿Estás seguro de que deseas eliminar este libro?')) {
+                return true; // Proceed with form submission
+            } else {
+                return false; // Cancel form submission
+            }
+        }
+    </script>
     <style>
         .secondary-menu {
             list-style-type: none;
