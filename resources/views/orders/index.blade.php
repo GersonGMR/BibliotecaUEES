@@ -220,7 +220,7 @@
     <!-- End Navbar -->
     <div class="container-fluid py-4">
       <div class="row mt-4">
-        <div class="col-lg-9 col-md-6 mb-md-0 mb-4">
+        <div class="col-lg-11 col-md-6 mb-md-0 mb-4">
           <div>
             <form id="searchForm" method="GET" action="{{ route('orders.index') }}">
               <div class="input-group input-group-outline mb-2">

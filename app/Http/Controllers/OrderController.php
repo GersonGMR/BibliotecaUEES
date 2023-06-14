@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Models\Book;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -33,29 +35,37 @@ class OrderController extends Controller
 
     public function create()
     {
-        return view('orders.create');
+        $books = Book::where('status', 1)->get();
+
+        return view('orders.create', compact('books'));
     }
 
     public function store(Request $request)
     {
-        // Validar los datos a guardar
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'description' => 'nullable',
-            'img' => 'nullable',
-            'ISBN' => 'required',
-            'amount' => 'required',
-            'status' => 'nullable',
-            'created_at' => 'nullable',
-            'updated_at' => 'nullable',
-            // Add validation rules for other fields
+        // Validate the incoming request data
+        $request->validate([
+            'user_id' => 'required',
+            'note' => 'required',
+            'quantity' => 'required|integer|min:1',
+            'book_id' => 'required',
         ]);
 
-        // Crear un nuevo libro
-        Order::create($validatedData);
+        // Create the order
+        $order = Order::create([
+            'user_id' => $request->input('user_id'),
+            'note' => $request->input('note'),
+            'quantity' => $request->input('quantity'),
+        ]);
 
-        // Redirect to the index page or show success message
-        return redirect()->route('orders.index')->with('success', 'El libro se insertó correctamente.');
+        // Create the order detail
+        $orderDetail = OrderDetail::create([
+            'order_id' => $order->id,
+            'book_id' => $request->input('book_id'),
+            'amount' => $request->input('quantity'), // Adjust as per your requirements
+        ]);
+
+        // Redirect or perform any other actions after successful creation
+        return redirect()->route('orders.index')->with('success', 'La orden se registró correctamente.');
     }
 
     public function show(Order $order)

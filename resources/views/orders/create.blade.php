@@ -226,24 +226,30 @@
                     <div class="card card-plain">
                         <div class="card-header">
                             <div class="card-body">
-                                <form role="form" action="{{ route('orders.store') }}" method="POST">
+                                <form method="POST" action="{{ route('orders.store') }}">
                                     @csrf
-                                    <label class="form-label">Ordenes</label>
+                                    <label class="form-label">Nuevo prestamo </label>
                                     <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label">Usuario</label>
-                                        <input type="text" class="form-control" id="user_id" name="user_id" required>
-                                    </div>
-                                    <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label">Nota</label>
-                                        <input type="text" class="form-control" id="note" name="note" rows="3" required>
+                                        <label class="form-label" for="user_id">ID usuario</label>
+                                        <input type="text" name="user_id" class="form-control" required>
                                     </div>
                                     <div class="input-group input-group-outline mb-3">
-                                        <label class="form-label">Cantidad</label>
-                                        <input type="text" class="form-control" id="quantity" name="quantity" required>
+                                        <label class="form-label" for="note">Nota</label>
+                                        <input type="text" name="note" class="form-control" required>
                                     </div>
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Registrar orden</button>
+                                    <div class="input-group input-group-outline mb-3">
+                                        <label class="form-label" for="quantity">Cantidad</label>
+                                        <input type="number" name="quantity" class="form-control" required>
                                     </div>
+                                    <label class="form-label" for="book_id">Selecciona el libro</label>
+                                    <div class="input-group input-group-outline mb-3">
+                                        <select class="form-select form-select-lg mb-3" name="book_id" id="book_id">
+                                            @foreach($books as $book)
+                                            <option value="{{ $book->id }}">{{ $book->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
                                 </form>
                             </div>
                         </div>
