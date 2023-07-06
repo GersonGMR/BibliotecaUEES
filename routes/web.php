@@ -7,6 +7,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +19,8 @@ use App\Http\Controllers\RoleController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 // Route definitions for the Book entity
 Route::get('/books/search', 'BookController@search')->name('books.search');
@@ -34,7 +34,7 @@ Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.
 Route::put('/books/{book}/soft-delete', [BookController::class, 'softDelete'])->name('books.softDelete');
 
 //Home Controller
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Route definitions for the Order entity
 Route::get('/orders/search', 'OrderController@search')->name('orders.search');
@@ -79,3 +79,12 @@ Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.e
 Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
 Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 Route::put('/roles/{role}/soft-delete', [RoleController::class, 'softDelete'])->name('roles.softDelete');
+
+//login
+Route::post('/login', [LoginController::class, 'login']);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/admin', [BookController::class, 'index'])->name('admin');
+    Route::get('/student', [UserController::class, 'index'])->name('student');
+});
+

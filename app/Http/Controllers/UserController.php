@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -55,11 +56,16 @@ class UserController extends Controller
             // Add validation rules for other fields
         ]);
 
+        // Hash the password if it is provided
+        if ($request->has('password')) {
+            $validatedData['password'] = Hash::make($validatedData['password']);
+        }
+
         // Crear un nuevo libro
         User::create($validatedData);
 
         // Redirect to the index page or show success message
-        return redirect()->route('users.index')->with('success', 'El libro se insertó correctamente.');
+        return redirect()->route('users.index')->with('success', 'El usuario se insertó correctamente.');
     }
 
     public function show(User $user)
@@ -87,6 +93,11 @@ class UserController extends Controller
         ]);
         // Find the user by ID
         $user = User::findOrFail($user->id);
+
+        // Hash the password if it is provided
+        if ($request->has('password')) {
+            $validatedData['password'] = Hash::make($validatedData['password']);
+        }
 
         // Update the user
         $user->update($validatedData);
