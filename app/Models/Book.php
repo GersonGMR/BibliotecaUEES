@@ -20,6 +20,7 @@ class Book extends Model
         'img',
         'ISBN',
         'amount',
+        'barcode_image',
         'status'
     ];
 }

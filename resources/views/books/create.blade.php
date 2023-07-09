@@ -112,7 +112,7 @@
           </div>
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-flex align-items-center">
-             
+
             </li>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
@@ -123,9 +123,9 @@
                 </div>
               </a>
             </li>
-        
+
             <li class="nav-item dropdown pe-2 d-flex align-items-center">
-              
+
               <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
                 <li class="mb-2">
                   <a class="dropdown-item border-radius-md" href="javascript:;">
@@ -222,9 +222,9 @@
                   <div class="mb-3">
                     <label for="img" class="form-label">Imagen</label>
                     <div class="form-group">
-                    <input type="file" id="img" aria-label="File browser example" name="img">
+                      <input type="file" id="img" aria-label="File browser example" name="img">
                     </div>
-                    
+
                   </div>
                   <div class="input-group input-group-outline mb-3">
                     <label class="form-label">ISBN</label>
@@ -238,6 +238,12 @@
                     <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Registrar libro</button>
                   </div>
                 </form>
+                <br></br>
+                @if ($errors->has('ISBN'))
+                <div class="alert alert-danger text-white">
+                  {{ $errors->first('ISBN') }}
+                </div>
+                @endif
               </div>
             </div>
           </div>

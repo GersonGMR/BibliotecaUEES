@@ -21,7 +21,11 @@ use App\Http\Controllers\Auth\LoginController;
 */
 Route::get('/', function () {
     return view('auth.login');
-});
+})->name('login1');
+
+//Middleware for admin users
+//INICIO RUTAS ACCESIBLES PARA ADMIN
+Route::middleware('role:2')->group(function () {
 // Route definitions for the Book entity
 Route::get('/books/search', 'BookController@search')->name('books.search');
 Route::get('/books', [BookController::class, 'index'])->name('books.index');
@@ -79,6 +83,8 @@ Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.e
 Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
 Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 Route::put('/roles/{role}/soft-delete', [RoleController::class, 'softDelete'])->name('roles.softDelete');
+});
+//FIN RUTAS ACCESIBLES PARA ADMIN
 
 //login
 Route::post('/login', [LoginController::class, 'login']);
@@ -87,4 +93,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin', [BookController::class, 'index'])->name('admin');
     Route::get('/student', [UserController::class, 'index'])->name('student');
 });
+
+//logout
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 

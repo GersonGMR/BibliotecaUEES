@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 class BookController extends Controller
 {
@@ -58,10 +60,21 @@ class BookController extends Controller
             // Add validation rules for other fields
         ]);
 
-        // Crear un nuevo libro
-        Book::create($validatedData);
+        // Check if the ISBN code already exists
+        $existingBook = Book::where('ISBN', $validatedData['ISBN'])->first();
+        if ($existingBook) {
+            return redirect()->back()->withErrors(['ISBN' => 'ERROR: El código ISBN ingresado ya existe.'])->withInput();
+        }
 
-        // Redirect to the index page or show success message
+        $isbn = $request->input('ISBN');
+
+        $generator = new BarcodeGeneratorPNG();
+        $barcodeData = 'data:image/png;base64,' . base64_encode($generator->getBarcode($isbn, $generator::TYPE_EAN_13));
+        $validatedData['barcode_image'] = $barcodeData;
+
+        $book = new Book($validatedData);
+        $book->save();
+
         return redirect()->route('books.index')->with('success', 'El libro se insertó correctamente.');
     }
 
@@ -81,17 +94,22 @@ class BookController extends Controller
         $validatedData = $request->validate([
             'name' => 'nullable',
             'description' => 'nullable',
-            'ISBN' => 'nullable',
+            'ISBN' => 'required',
             'amount' => 'nullable',
             'status' => 'required|boolean',
             // Add validation rules for other fields
         ]);
-        // Find the book by ID
-        $book = Book::findOrFail($book->id);
+
+        $isbn = $request->input('ISBN');
+
+        $generator = new BarcodeGeneratorPNG();
+        $barcodeData = 'data:image/png;base64,' . base64_encode($generator->getBarcode($isbn, $generator::TYPE_EAN_13));
+        $validatedData['barcode_image'] = $barcodeData;
 
         // Update the book
         $book->update($validatedData);
 
+        
         // Redirect to the show page or show success message
         return redirect()->route('books.index', $book)->with('success', 'El libro se actualizó correctamente');
     }

@@ -17,19 +17,26 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-    $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password');
 
-    if (Auth::attempt($credentials)) {
-        $user = Auth::user();
-        
-        if ($user->role_id === 1) {
-            return redirect()->route('student');
-        } elseif ($user->role_id === 2) {
-            return redirect()->route('admin');
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            if ($user->role_id === 1) {
+                return redirect()->route('student');
+            } elseif ($user->role_id === 2) {
+                return redirect()->route('admin');
+            }
         }
+
+        return redirect()->back()->withErrors(['message' => 'Credenciales inválidas'])->withInput();
     }
 
-    return redirect()->back()->withErrors(['message' => 'Credenciales inválidas'])->withInput();
-    }
+    public function logout()
+    {
+        Auth::logout();
 
+        // Redirect to the desired page after logout
+        return redirect()->route('login1');
+    }
 }
