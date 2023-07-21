@@ -133,6 +133,11 @@
           <div>
             <a href="{{ route('books.create') }}" class="btn btn-primary">Ingresar nuevo libro</a>
           </div>
+          @if (session('success'))
+          <div class="alert alert-success text-white">
+            {{ session('success') }}
+          </div>
+          @endif
 
           <div>
             <form id="searchForm" method="GET" action="{{ route('books.index') }}">
@@ -203,9 +208,50 @@
                   </table>
                 </div>
                 <!-- Add the pagination links -->
-                <div class="d-flex justify-content-center mt-3">
-                  {{ $books->links() }}
-                </div>
+                <nav aria-label="...">
+                  <ul class="pagination justify-content-center">
+                    <!-- Previous Page Link -->
+                    @if ($books->onFirstPage())
+                    <li class="page-item disabled">
+                      <a class="page-link" href="javascript:;" tabindex="-1">
+                        <span class="material-icons">keyboard_arrow_left</span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                    </li>
+                    @else
+                    <li class="page-item">
+                      <a class="page-link" href="{{ $books->previousPageUrl() }}">
+                        <span class="material-icons">keyboard_arrow_left</span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                    </li>
+                    @endif
+
+                    <!-- Pagination Links -->
+                    @foreach ($books->getUrlRange(1, $books->lastPage()) as $page => $url)
+                    <li class="page-item {{ $books->currentPage() == $page ? 'active' : '' }}">
+                      <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                    </li>
+                    @endforeach
+
+                    <!-- Next Page Link -->
+                    @if ($books->hasMorePages())
+                    <li class="page-item">
+                      <a class="page-link" href="{{ $books->nextPageUrl() }}">
+                        <span class="material-icons">keyboard_arrow_right</span>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </li>
+                    @else
+                    <li class="page-item disabled">
+                      <a class="page-link" href="javascript:;">
+                        <span class="material-icons">keyboard_arrow_right</span>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </li>
+                    @endif
+                  </ul>
+                </nav>
               </div>
             </div>
             <!-- FIN TABLA -->

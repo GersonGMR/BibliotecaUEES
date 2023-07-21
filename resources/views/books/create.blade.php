@@ -208,7 +208,7 @@
           <div class="card card-plain">
             <div class="card-header">
               <div class="card-body">
-                <form role="form" action="{{ route('books.store') }}" method="POST">
+                <form role="form" action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data">
                   @csrf
                   <label class="form-label">Libros</label>
                   <div class="input-group input-group-outline mb-3">
@@ -226,13 +226,20 @@
                     </div>
 
                   </div>
+                  <div class="mb-3">
+                    <label for="img" class="form-label">Documento PDF</label>
+                    <div class="form-group">
+                      <input type="file" id="docpdf" aria-label="File browser example" name="docpdf" accept="application/pdf">
+                    </div>
+
+                  </div>
                   <div class="input-group input-group-outline mb-3">
                     <label class="form-label">ISBN</label>
                     <input type="text" class="form-control" id="ISBN" name="ISBN" required>
                   </div>
                   <div class="input-group input-group-outline mb-3">
                     <label class="form-label">Cantidad</label>
-                    <input type="text" class="form-control" id="amount" name="amount" required>
+                    <input type="number" class="form-control" id="amount" name="amount" required>
                   </div>
                   <div class="text-center">
                     <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Registrar libro</button>

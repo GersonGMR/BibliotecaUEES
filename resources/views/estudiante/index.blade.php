@@ -48,62 +48,21 @@
     <hr class="horizontal light mt-0 mb-2">
     <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link text-white" href="{{ route('home') }}">
+
+      <li class="nav-item">
+          <a class="nav-link text-white active bg-gradient-primary" href="{{ route('estudiante.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
-            <span class="nav-link-text ms-1">Inicio</span>
+            <span class="nav-link-text ms-1">Libros</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" onclick="toggleSecondaryMenu(event)">
+          <a class="nav-link text-white " href="{{ route('estudiante.resumen') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
-            <span class="nav-link-text ms-1">Préstamos</span>
-          </a>
-          <ul class="secondary-menu">
-            <li class="nav-item">
-              <a class="nav-link text-white active bg-gradient-secondary" href="{{ route('orders.index') }}">
-                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i class="material-icons opacity-10">table_view</i>
-                </div>
-                <span class="nav-link-text ms-1">Ordenes</span>
-              </a>
-            </li>
-            <li>
-              <a class="nav-link text-white" href="{{ route('ordersDetails.index') }}">
-                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i class="material-icons opacity-10">table_view</i>
-                </div>
-                <span class="nav-link-text ms-1">Detalle ordenes</span>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="{{ route('users.index') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">receipt_long</i>
-            </div>
-            <span class="nav-link-text ms-1">Usuarios</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="{{ route('roles.index') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">receipt_long</i>
-            </div>
-            <span class="nav-link-text ms-1">Roles</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="{{ route('books.index') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">view_in_ar</i>
-            </div>
-            <span class="nav-link-text ms-1">Libros</span>
+            <span class="nav-link-text ms-1">Mis alquileres</span>
           </a>
         </li>
 
@@ -116,14 +75,15 @@
   </aside>
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <!-- Navbar -->
+
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pagina</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Préstamos</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Libros</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0">Ordenes</h6>
+          <h6 class="font-weight-bolder mb-0">Libros</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -146,16 +106,23 @@
     <div class="container-fluid py-4">
       <div class="row mt-4">
         <div class="col-lg-11 col-md-6 mb-md-0 mb-4">
+
           <div>
-            <form id="searchForm" method="GET" action="{{ route('orders.index') }}">
+            <form id="searchForm" method="GET" action="{{ route('estudiante.index') }}">
               <div class="input-group input-group-outline mb-2">
-                <input type="text" id="searchInput" name="search" class="form-control" placeholder="Buscar ordenes..." aria-label="Search books" style="background-color: white;">
+                <input type="text" id="searchInput" name="search" class="form-control" placeholder="Buscar libros..." aria-label="Search books" style="background-color: white;">
               </div>
               <div class="input-group-append">
                 <button class="btn btn-primary" type="submit">Buscar</button>
               </div>
 
             </form>
+
+            @if (session('success'))
+            <div class="alert alert-success text-white">
+              {{ session('success') }}
+            </div>
+            @endif
 
             <!-- INICIA TABLA -->
             <div class="card">
@@ -164,46 +131,32 @@
                   <table class="table align-items-center mb-0">
                     <thead>
                       <tr>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Código usuario</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nota</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cantidad</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha de reingreso</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estado</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha creacion</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha actualizacion</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Editar</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Eliminar</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Descripcion</th>
+                        <!--<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Imagen</th>-->
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Stock</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Descargar</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Alquilar</th>
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach ($orders as $order)
+                      @foreach ($books as $book)
                       <tr>
-                        <td class="align-middle text-center text-sm">{{ $order->id }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->user_id }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->note }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->quantity }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->return_date }}</td>
+                        <td class="align-middle text-center text-sm">{{ $book->name }}</td>
+                        <td class="align-middle text-center text-sm">{{ $book->description }}</td>
+                        <!--<td class="align-middle text-center text-sm">{{ $book->img }}</td>-->
+                        <td class="align-middle text-center text-sm">{{ $book->amount }}</td>
                         <td class="align-middle text-center text-sm">
-                          @if ($order->status)
-                          <span class="badge badge-sm badge-success" style="color: #0ba101;">Activo</span>
+                          @if ($book->docpdf)
+                          <!-- Descargar button -->
+                          <a href="{{ route('books.downloadBlob', ['book' => $book->id]) }}" class="btn btn-secondary btn-sm">Descargar</a>
                           @else
-                          <span class="badge badge-sm badge-success" style="color: #e30000;">Inactivo</span>
+                          <span class="text-muted">No hay PDF</span>
                           @endif
                         </td>
-                        <td class="align-middle text-center text-sm">{{ $order->created_at }}</td>
-                        <td class="align-middle text-center text-sm">{{ $order->updated_at }}</td>
                         <td class="align-middle text-center text-sm">
-                          <!-- Edit button -->
-                          <a href="{{ route('orders.edit', ['order' => $order->id]) }}" class="btn btn-info btn-sm">Editar</a>
-                        </td>
-                        <td class="align-middle text-center text-sm">
-                          <!-- Delete button -->
-                          <form id="delete-form" action="{{ route('orders.softDelete', $order->id) }}" method="POST" style="display: inline">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete()">Eliminar</button>
-                          </form>
+                          <!-- Alquilar button -->
+                          <a href="{{ route('voucher.index', ['book' => $book->id]) }}" class="btn btn-info btn-sm">Alquilar</a>
                         </td>
                       </tr>
                       @endforeach
@@ -214,7 +167,7 @@
                 <nav aria-label="...">
                   <ul class="pagination justify-content-center">
                     <!-- Previous Page Link -->
-                    @if ($orders->onFirstPage())
+                    @if ($books->onFirstPage())
                     <li class="page-item disabled">
                       <a class="page-link" href="javascript:;" tabindex="-1">
                         <span class="material-icons">keyboard_arrow_left</span>
@@ -223,7 +176,7 @@
                     </li>
                     @else
                     <li class="page-item">
-                      <a class="page-link" href="{{ $orders->previousPageUrl() }}">
+                      <a class="page-link" href="{{ $books->previousPageUrl() }}">
                         <span class="material-icons">keyboard_arrow_left</span>
                         <span class="sr-only">Previous</span>
                       </a>
@@ -231,16 +184,16 @@
                     @endif
 
                     <!-- Pagination Links -->
-                    @foreach ($orders->getUrlRange(1, $orders->lastPage()) as $page => $url)
-                    <li class="page-item {{ $orders->currentPage() == $page ? 'active' : '' }}">
+                    @foreach ($books->getUrlRange(1, $books->lastPage()) as $page => $url)
+                    <li class="page-item {{ $books->currentPage() == $page ? 'active' : '' }}">
                       <a class="page-link" href="{{ $url }}">{{ $page }}</a>
                     </li>
                     @endforeach
 
                     <!-- Next Page Link -->
-                    @if ($orders->hasMorePages())
+                    @if ($books->hasMorePages())
                     <li class="page-item">
-                      <a class="page-link" href="{{ $orders->nextPageUrl() }}">
+                      <a class="page-link" href="{{ $books->nextPageUrl() }}">
                         <span class="material-icons">keyboard_arrow_right</span>
                         <span class="sr-only">Next</span>
                       </a>
@@ -258,11 +211,8 @@
               </div>
             </div>
             <!-- FIN TABLA -->
-
-
           </div>
         </div>
-
         <footer class="footer py-4  ">
           <div class="container-fluid">
             <div class="row align-items-center justify-content-lg-between">
@@ -285,6 +235,12 @@
           </div>
         </footer>
       </div>
+
+      <!-- Your existing table and button code -->
+      <table class="table align-items-center mb-0">
+        <!-- Table content goes here -->
+      </table>
+
   </main>
   <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
@@ -353,24 +309,6 @@
   <script src="{{ asset('js/plugins/perfect-scrollbar.min.js') }}"></script>
   <script src="{{ asset('js/plugins/smooth-scrollbar.min.js') }}"></script>
   <script src="{{ asset('js/plugins/chartjs.min.js') }}"></script>
-  <style>
-    .secondary-menu {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .secondary-menu li {
-      display: block;
-    }
-  </style>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    function toggleSecondaryMenu(event) {
-      event.preventDefault();
-      $(event.target).toggleClass('show-menu');
-    }
-  </script>
   <script>
     function confirmDelete() {
       if (confirm('¿Estás seguro de que deseas eliminar este libro?')) {
@@ -380,6 +318,7 @@
       }
     }
   </script>
+
   <script>
     var ctx = document.getElementById("chart-bars").getContext("2d");
 

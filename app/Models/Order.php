@@ -24,6 +24,7 @@ class Order extends Model
         'note',
         'quantity',
         'return_date',
-        'status'
+        'status',
+        'comprobante'
     ];
 }

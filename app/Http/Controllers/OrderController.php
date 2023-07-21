@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -114,4 +115,6 @@ class OrderController extends Controller
         // Redirect to the index page or show success message
         return redirect()->route('orders.index')->with('success', 'Libro eliminado correctamente.');
     }
+
+    
 }

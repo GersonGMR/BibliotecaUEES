@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Picqer\Barcode\BarcodeGeneratorPNG;
+use Illuminate\Support\Facades\Response;
+
 
 class BookController extends Controller
 {
@@ -65,11 +66,25 @@ class BookController extends Controller
         if ($existingBook) {
             return redirect()->back()->withErrors(['ISBN' => 'ERROR: El código ISBN ingresado ya existe.'])->withInput();
         }
+        // Upload the PDF file
+        $pdfFile = $request->file('docpdf');
+        $fileName = $pdfFile->getClientOriginalName();
+        $pdfFile->move(storage_path('app/public/pdfs'), $fileName);
+
+        // Save the PDF file path in the database
+        $validatedData['docpdf'] = $fileName;
 
         $isbn = $request->input('ISBN');
 
         $generator = new BarcodeGeneratorPNG();
-        $barcodeData = 'data:image/png;base64,' . base64_encode($generator->getBarcode($isbn, $generator::TYPE_EAN_13));
+        $barcodeData = null;
+        if (strlen($isbn) === 12) {
+            // Generate a Code 128 barcode for the 12-digit ISBN
+            $barcodeData = 'data:image/png;base64,' . base64_encode($generator->getBarcode($isbn, $generator::TYPE_CODE_128));
+        } elseif (strlen($isbn) === 13) {
+            // Generate an EAN-13 barcode for the 13-digit ISBN
+            $barcodeData = 'data:image/png;base64,' . base64_encode($generator->getBarcode($isbn, $generator::TYPE_EAN_13));
+        }
         $validatedData['barcode_image'] = $barcodeData;
 
         $book = new Book($validatedData);
@@ -94,6 +109,7 @@ class BookController extends Controller
         $validatedData = $request->validate([
             'name' => 'nullable',
             'description' => 'nullable',
+            'docpdf' => 'nullable|file|mimes:pdf',
             'ISBN' => 'required',
             'amount' => 'nullable',
             'status' => 'required|boolean',
@@ -106,10 +122,23 @@ class BookController extends Controller
         $barcodeData = 'data:image/png;base64,' . base64_encode($generator->getBarcode($isbn, $generator::TYPE_EAN_13));
         $validatedData['barcode_image'] = $barcodeData;
 
+        // Handle the file upload and update the 'docpdf' field
+        if ($request->hasFile('docpdf')) {
+            $file = $request->file('docpdf');
+            $fileName = 'docpdf_' . time() . '.' . $file->getClientOriginalExtension();
+
+            // Store the file in the database as a Blob
+            $blobData = file_get_contents($file);
+            $validatedData['docpdf'] = $blobData;
+
+            // Update the filename in the database
+            $validatedData['docpdf_filename'] = $fileName;
+        }
+
         // Update the book
         $book->update($validatedData);
 
-        
+
         // Redirect to the show page or show success message
         return redirect()->route('books.index', $book)->with('success', 'El libro se actualizó correctamente');
     }
@@ -129,4 +158,14 @@ class BookController extends Controller
         // Redirect to the index page or show success message
         return redirect()->route('books.index')->with('success', 'Libro eliminado correctamente.');
     }
+
+    public function downloadBlob(Book $book)
+    {
+        $pdfPath = storage_path('app/public/pdfs/' . $book->docpdf);
+
+        return Response::download($pdfPath, $book->name . '.pdf');
+    }
+
+    
+
 }

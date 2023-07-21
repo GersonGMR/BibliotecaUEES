@@ -208,7 +208,7 @@
           <div class="card card-plain">
             <div class="card-header">
               <div class="card-body">
-                <form id="updateForm" role="form" action="{{ route('books.update', ['book' => $book->id]) }}" method="POST">
+                <form id="updateForm" role="form" action="{{ route('books.update', ['book' => $book->id]) }}" method="POST" enctype="multipart/form-data">
                   @csrf
                   @method('PUT')
                   <label class="form-label" style="font-size: large;">Libros</label>
@@ -219,6 +219,10 @@
                   <div class="input-group input-group-static mb-4">
                     <label>Descripcion</label>
                     <input type="text" class="form-control" id="description" name="description" rows="3" value="{{ $book->description }}">
+                  </div>
+                  <div class="input-group input-group-static mb-4">
+                    <label>Documento PDF</label>
+                    <input type="file" class="form-control" id="docpdf" name="docpdf" value="{{ $book->docpdf }}" accept="application/pdf">
                   </div>
                   <div class="input-group input-group-static mb-4">
                     <label>ISBN</label>

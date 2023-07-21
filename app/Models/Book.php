@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
 {
+    protected $table = 'books';
+    protected $primaryKey = 'id';
     use HasFactory;
 
     public function orderDetails()
@@ -18,6 +20,7 @@ class Book extends Model
         'name',
         'description',
         'img',
+        'docpdf',
         'ISBN',
         'amount',
         'barcode_image',

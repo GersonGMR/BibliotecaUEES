@@ -14,10 +14,18 @@ class RoleMiddleware
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, ...$roles)
     {
-        if ($request->user() && $request->user()->role_id == $role) {
-            return $next($request);
+        $user = $request->user();
+
+        if (!$user) {
+            return redirect()->route('login1')->with('error', 'Acceso no autorizado.');
+        }
+
+        foreach ($roles as $role) {
+            if ($user->role_id == $role) {
+                return $next($request);
+            }
         }
 
         return redirect()->route('login1')->with('error', 'Acceso no autorizado.');
