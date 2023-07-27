@@ -16,6 +16,9 @@ class OrderController extends Controller
 
         $orders = Order::query()
             ->whereRaw('LOWER(user_id) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereHas('user', function ($query) use ($searchQuery) {
+                $query->whereRaw('LOWER(email) LIKE ?', ['%' . strtolower($searchQuery) . '%']);
+            })
             ->orWhereRaw('LOWER(note) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
             ->orWhereRaw('LOWER(quantity) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
             ->orWhereRaw('LOWER(return_date) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
@@ -83,11 +86,8 @@ class OrderController extends Controller
     {
         // Validate the request data
         $validatedData = $request->validate([
-            'name' => 'nullable',
-            'description' => 'nullable',
-            'ISBN' => 'nullable',
-            'amount' => 'nullable',
-            'status' => 'required|boolean',
+            'note' => 'nullable',
+            'status' => 'required|boolean'
             // Add validation rules for other fields
         ]);
         // Find the order by ID

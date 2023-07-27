@@ -13,6 +13,9 @@ class OrderDetailController extends Controller
 
         $ordersdetails = OrderDetail::query()
             ->whereRaw('LOWER(order_id) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
+            ->orWhereHas('book', function ($query) use ($searchQuery) {
+                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($searchQuery) . '%']);
+            })
             ->orWhereRaw('LOWER(book_id) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
             ->orWhereRaw('LOWER(amount) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
             ->orWhereRaw('LOWER(created_at) LIKE ?', ['%' . strtolower($searchQuery) . '%'])

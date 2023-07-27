@@ -208,43 +208,23 @@
           <div class="card card-plain">
             <div class="card-header">
               <div class="card-body">
-                <form id="updateForm" role="form" action="{{ route('orders.update', ['user' => $user->id]) }}" method="POST">
+                <form id="updateForm" role="form" action="{{ route('orders.update', ['order' => $order->id]) }}" method="POST">
                   @csrf
                   @method('PUT')
-                  <label class="form-label" style="font-size: large;">Usuarios</label>
+                  <label class="form-label" style="font-size: large;">Préstamos</label>
                   <div class="input-group input-group-static mb-4">
-                    <label>Rol</label>
-                    <input type="text" class="form-control" id="role_id" name="role_id" value="{{ $user->role_id }}">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Nombre</label>
-                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ $user->first_name }}">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Apellido</label>
-                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $user->last_name }}">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Direccion</label>
-                    <input type="text" class="form-control" id="adress" name="adress" value="{{ $user->adress }}">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Celular</label>
-                    <input type="text" class="form-control" id="phone" name="phone" value="{{ $user->phone }}">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Email</label>
-                    <input type="text" class="form-control" id="email" name="email" value="{{ $user->email }}">
+                    <label>Nota</label>
+                    <input type="text" class="form-control" id="note" name="note" value="{{ $order->note }}">
                   </div>
                   <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="statusSwitch" {{ $user->status ? 'checked' : '' }}>
-                    <label class="form-check-label" for="statusSwitch">Estado de usuario</label>
+                    <input class="form-check-input" type="checkbox" id="statusSwitch" {{ $order->status ? 'checked' : '' }}>
+                    <label class="form-check-label" for="statusSwitch">Estado de orden</label>
                   </div>
 
                   <!-- Hidden input field for the status value -->
-                  <input type="hidden" name="status" id="status" value="{{ $user->status }}">
+                  <input type="hidden" name="status" id="status" value="{{ $order->status }}">
                   <div class="text-center">
-                    <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Actualizar usuario</button>
+                    <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Actualizar orden</button>
                   </div>
                 </form>
               </div>

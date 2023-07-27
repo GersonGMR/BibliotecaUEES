@@ -166,11 +166,11 @@
                                             <tr>
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id Orden</th>
-                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id Libro</th>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre libro</th>
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cantidad</th>
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha creacion</th>
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha actualizacion</th>
-                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Editar</th>
+                                                <!--<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Editar</th>-->
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Eliminar</th>
                                             </tr>
                                         </thead>
@@ -179,14 +179,14 @@
                                             <tr>
                                                 <td class="align-middle text-center text-sm">{{ $orderdetail->id }}</td>
                                                 <td class="align-middle text-center text-sm">{{ $orderdetail->order_id }}</td>
-                                                <td class="align-middle text-center text-sm">{{ $orderdetail->book_id }}</td>
+                                                <td class="align-middle text-center text-sm">{{ $orderdetail->book->name }}</td>
                                                 <td class="align-middle text-center text-sm">{{ $orderdetail->amount }}</td>
                                                 <td class="align-middle text-center text-sm">{{ $orderdetail->created_at }}</td>
                                                 <td class="align-middle text-center text-sm">{{ $orderdetail->updated_at }}</td>
-                                                <td class="align-middle text-center text-sm">
-                                                    <!-- Edit button -->
+                                                <!--<td class="align-middle text-center text-sm">
+                                                     Edit button 
                                                     <a href="{{ route('ordersDetails.edit', ['orderdetail' => $orderdetail->id]) }}" class="btn btn-info btn-sm">Editar</a>
-                                                </td>
+                                                </td>-->
                                                 <td class="align-middle text-center text-sm">
                                                     <!-- Delete button -->
                                                     <form id="delete-form" action="{{ route('ordersDetails.softDelete', $orderdetail->id) }}" method="POST" style="display: inline">

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -19,17 +18,25 @@ class LoginController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
+        // Attempt to authenticate the user
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
-            if ($user->role_id === 1) {
-                return redirect()->route('student');
-            } elseif ($user->role_id === 2) {
-                return redirect()->route('admin');
+            // Check if the user's status is 1 (available)
+            if ($user->status === 1) {
+                if ($user->role_id === 1) {
+                    return redirect()->route('student');
+                } elseif ($user->role_id === 2) {
+                    return redirect()->route('admin');
+                }
+            } else {
+                // Log out the user if their status is not 1
+                Auth::logout();
+                return redirect()->back()->withErrors(['message' => 'Usuario deshabilitado, contacta con el administrador'])->withInput();
             }
         }
 
-        return redirect()->back()->withErrors(['message' => 'Credenciales inválidas'])->withInput();
+        return redirect()->back()->withErrors(['message' => 'Invalid credentials.'])->withInput();
     }
 
     public function logout()

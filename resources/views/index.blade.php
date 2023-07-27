@@ -215,7 +215,6 @@
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Código usuario</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nota</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cantidad</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha de reingreso</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estado</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha creacion</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha actualizacion</th>
@@ -228,7 +227,6 @@
                       <td class="align-middle text-center text-sm">{{ $order->user_id }}</td>
                       <td class="align-middle text-center text-sm">{{ $order->note }}</td>
                       <td class="align-middle text-center text-sm">{{ $order->quantity }}</td>
-                      <td class="align-middle text-center text-sm">{{ $order->return_date }}</td>
                       <td class="align-middle text-center text-sm">
                         @if ($order->status)
                         <span class="badge badge-sm badge-success" style="color: #0ba101;">Activo</span>

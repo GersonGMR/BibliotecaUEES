@@ -220,10 +220,6 @@
                     <label>Libro id</label>
                     <input type="text" class="form-control" id="book_id" name="book_id" value="{{ $orderdetail->book_id }}">
                   </div>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Cantidad</label>
-                    <input type="text" class="form-control" id="amount" name="amount" value="{{ $orderdetail->amount }}">
-                  </div>
                   <div class="text-center">
                     <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Actualizar orden</button>
                   </div>
