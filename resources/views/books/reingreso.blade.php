@@ -101,100 +101,25 @@
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
-
-          <h6 class="font-weight-bolder mb-0">Biblioteca</h6>
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pagina</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Libros</li>
+          </ol>
+          <h6 class="font-weight-bolder mb-0">Reingreso</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-            <div class="input-group input-group-outline">
 
-            </div>
           </div>
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-flex align-items-center">
-             
+              <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-primary">Cerrar sesión</button>
+              </form>
+
             </li>
-            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
-                <div class="sidenav-toggler-inner">
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                </div>
-              </a>
-            </li>
-        
-            <li class="nav-item dropdown pe-2 d-flex align-items-center">
-              
-              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
-                <li class="mb-2">
-                  <a class="dropdown-item border-radius-md" href="javascript:;">
-                    <div class="d-flex py-1">
-                      <div class="my-auto">
-                        <img src="{{ asset('img/team-2.jpg') }}" class="avatar avatar-sm  me-3 ">
-                      </div>
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 class="text-sm font-weight-normal mb-1">
-                          <span class="font-weight-bold">New message</span> from Laur
-                        </h6>
-                        <p class="text-xs text-secondary mb-0">
-                          <i class="fa fa-clock me-1"></i>
-                          13 minutes ago
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li class="mb-2">
-                  <a class="dropdown-item border-radius-md" href="javascript:;">
-                    <div class="d-flex py-1">
-                      <div class="my-auto">
-                        <img src="{{ asset('img/small-logos/logo-spotify.svg') }}" class="avatar avatar-sm bg-gradient-dark  me-3 ">
-                      </div>
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 class="text-sm font-weight-normal mb-1">
-                          <span class="font-weight-bold">New album</span> by Travis Scott
-                        </h6>
-                        <p class="text-xs text-secondary mb-0">
-                          <i class="fa fa-clock me-1"></i>
-                          1 day
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item border-radius-md" href="javascript:;">
-                    <div class="d-flex py-1">
-                      <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
-                        <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                          <title>credit-card</title>
-                          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                              <g transform="translate(1716.000000, 291.000000)">
-                                <g transform="translate(453.000000, 454.000000)">
-                                  <path class="color-background" d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z" opacity="0.593633743"></path>
-                                  <path class="color-background" d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z"></path>
-                                </g>
-                              </g>
-                            </g>
-                          </g>
-                        </svg>
-                      </div>
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 class="text-sm font-weight-normal mb-1">
-                          Payment successfully completed
-                        </h6>
-                        <p class="text-xs text-secondary mb-0">
-                          <i class="fa fa-clock me-1"></i>
-                          2 days
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </li>
+
           </ul>
         </div>
       </div>
@@ -208,26 +133,29 @@
           <div class="card card-plain">
             <div class="card-header">
               <div class="card-body">
-                <form id="updateForm" role="form" action="{{ route('orders.update', ['order' => $order->id]) }}" method="POST">
+                <form role="form" action="{{ route('processReingreso') }}" method="POST">
                   @csrf
-                  @method('PUT')
-                  <label class="form-label" style="font-size: large;">Préstamos</label>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Nota</label>
-                    <input type="text" class="form-control" id="note" name="note" value="{{ $order->note }}">
+                  <label class="form-label">Reingreso libros</label>
+                  
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">ISBN del libro</label>
+                    <input type="text" class="form-control" id="ISBN" name="ISBN" required>
                   </div>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="statusSwitch" {{ $order->status ? 'checked' : '' }}>
-                    <label class="form-check-label" for="statusSwitch">Estado de orden</label>
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Email usuario que realizó el préstamo</label>
+                    <input type="text" class="form-control" id="user_email" name="user_email" required>
                   </div>
-
-                  <!-- Hidden input field for the status value -->
-                  <input type="hidden" name="status" id="status" value="{{ $order->status }}">
                   <div class="text-center">
-                    <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Actualizar orden</button>
-                    <a href="{{ route('orders.index') }}" class="btn btn-lg bg-gradient-danger btn-lg w-100 mt-4 mb-0">Cancelar</a>
+                    <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Reingresar libro</button>
+                    <a href="{{ route('books.index') }}" class="btn btn-lg bg-gradient-danger btn-lg w-100 mt-4 mb-0">Cancelar</a>
                   </div>
                 </form>
+                <br></br>
+                @if ($errors->has('ISBN'))
+                <div class="alert alert-danger text-white">
+                  {{ $errors->first('ISBN') }}
+                </div>
+                @endif
               </div>
             </div>
           </div>
@@ -319,35 +247,6 @@
     </div>
   </div>
   <!--   Core JS Files   -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <script>
-    $(document).ready(function() {
-      console.log('Document ready!');
-      $('#updateForm').submit(function(e) {
-        e.preventDefault(); // Prevent default form submission
-        console.log('Form submitted!');
-        var status = $('#statusSwitch').prop('checked') ? 1 : 0;
-        console.log('Status:', status);
-        $('input[name="status"]').val(status); // Update the hidden input value
-        // Submit the form using AJAX
-        $.ajax({
-          url: $(this).attr('action'),
-          type: 'POST',
-          data: $(this).serialize(),
-          success: function(response) {
-            console.log('AJAX success response:', response);
-            window.location.href = "{{ route('orders.index') }}";
-            // Handle success response, e.g., redirect or display a success message
-          },
-          error: function(xhr) {
-            console.log('AJAX error:', xhr);
-            // Handle error response, e.g., display an error message
-          }
-        });
-      });
-    });
-  </script>
   <script src="{{ asset('js/core/popper.min.js') }}"></script>
   <script src="{{ asset('js/core/bootstrap.min.js') }}"></script>
   <script src="{{ asset('js/plugins/perfect-scrollbar.min.js') }}"></script>

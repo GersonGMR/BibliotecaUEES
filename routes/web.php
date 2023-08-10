@@ -38,6 +38,9 @@ Route::middleware('role:2')->group(function () {
     Route::put('/books/{book}', [BookController::class, 'update'])->name('books.update');
     Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
     Route::put('/books/{book}/soft-delete', [BookController::class, 'softDelete'])->name('books.softDelete');
+    Route::post('/process-reingreso', [BookController::class, 'processReingreso'])->name('processReingreso');
+    Route::get('/reingreso', [BookController::class, 'showReingresoForm'])->name('books.reingreso');
+
 
     //Home Controller
     Route::get('/home', [HomeController::class, 'index'])->name('home');

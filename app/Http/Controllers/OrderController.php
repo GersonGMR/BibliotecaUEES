@@ -32,6 +32,7 @@ class OrderController extends Controller
             })
             ->orWhereRaw('LOWER(created_at) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
             ->orWhere('id', 'like', "%$searchQuery%")
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return view('orders.index', compact('orders'));

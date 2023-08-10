@@ -6,7 +6,9 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 use Illuminate\Support\Facades\Response;
-
+use Carbon\Carbon;
+use App\Models\Order;
+use App\Models\User;
 
 class BookController extends Controller
 {
@@ -53,8 +55,8 @@ class BookController extends Controller
             'name' => 'required',
             'description' => 'nullable',
             'img' => 'nullable',
-            'ISBN' => 'required',
-            'amount' => 'required',
+            'ISBN' => 'nullable',
+            'amount' => 'nullable',
             'status' => 'nullable',
             'created_at' => 'nullable',
             'updated_at' => 'nullable',
@@ -166,6 +168,33 @@ class BookController extends Controller
         return Response::download($pdfPath, $book->name . '.pdf');
     }
 
-    
+    public function processReingreso(Request $request)
+    {
+        $isbn = $request->input('ISBN');
+        $userEmail = $request->input('user_email');
 
+        // Find the book by ISBN and increment the stock
+        $book = Book::where('ISBN', $isbn)->first();
+        if ($book) {
+            $book->amount += 1;
+            $book->save();
+        }
+
+        // Find the user by email and get the user ID
+        $user = User::where('email', $userEmail)->first();
+        if ($user) {
+            // Find the user's last order and update the return_date
+            $userOrder = Order::where('user_id', $user->id)->latest()->first();
+            if ($userOrder) {
+                $userOrder->return_date = Carbon::now();
+                $userOrder->save();
+            }
+        }
+        return redirect()->route('books.index')->with('success', 'Reingreso exitoso');
+    }
+
+    public function showReingresoForm()
+    {
+        return view('books.reingreso');
+    }
 }

@@ -131,7 +131,8 @@
         <div class="col-lg-11 col-md-6 mb-md-0 mb-4">
 
           <div>
-            <a href="{{ route('books.create') }}" class="btn btn-primary">Ingresar nuevo libro</a>
+            <a href="{{ route('books.create') }}" class="btn btn-info">Nuevo libro</a>
+            <a href="{{ route('books.reingreso') }}" class="btn btn-success">Reingresar libro</a>
           </div>
           @if (session('success'))
           <div class="alert alert-success text-white">
