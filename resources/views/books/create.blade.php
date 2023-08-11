@@ -164,7 +164,7 @@
                   </div>
                   <div class="input-group input-group-outline mb-3">
                     <label class="form-label">Cantidad</label>
-                    <input type="number" class="form-control" id="amount" name="amount">
+                    <input type="number" class="form-control" id="amount" name="amount" required>
                   </div>
                   <div class="text-center">
                     <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Registrar libro</button>
