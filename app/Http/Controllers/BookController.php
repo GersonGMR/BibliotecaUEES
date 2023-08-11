@@ -126,7 +126,7 @@ class BookController extends Controller
         }
 
         // Update the book
-        $book->save($validatedData);
+        $book->update($validatedData);
 
 
         // Redirect to the show page or show success message

@@ -171,7 +171,7 @@
               </div>
               <div class="text-end pt-1">
                 <p class="text-sm mb-0 text-capitalize">Libros</p>
-                <h4 class="mb-0">{{ \App\Models\Book::count() }}</h4>
+                <h4 class="mb-0">{{ \App\Models\Book::sum('amount') }}</h4>
               </div>
             </div>
             <hr class="dark horizontal my-0">
