@@ -65,8 +65,11 @@ class BookController extends Controller
         ]);
 
         // Check if the ISBN code already exists
-        $existingBook = Book::where('ISBN', $validatedData['ISBN'])->first();
-        if ($existingBook) {
+        $existingBook = Book::where('ISBN', $validatedData['ISBN'])
+            ->whereNotNull('ISBN') // Add this condition to exclude NULL values
+            ->first();
+
+        if ($existingBook !== null) {
             return redirect()->back()->withErrors(['ISBN' => 'ERROR: El código ISBN ingresado ya existe.'])->withInput();
         }
         // Upload the PDF file
@@ -120,9 +123,9 @@ class BookController extends Controller
         $isbn = $request->input('ISBN');
         if (!empty($isbn)) {
 
-        $generator = new BarcodeGeneratorPNG();
-        $barcodeData = 'data:image/png;base64,' . base64_encode($generator->getBarcode($isbn, $generator::TYPE_EAN_13));
-        $validatedData['barcode_image'] = $barcodeData;
+            $generator = new BarcodeGeneratorPNG();
+            $barcodeData = 'data:image/png;base64,' . base64_encode($generator->getBarcode($isbn, $generator::TYPE_EAN_13));
+            $validatedData['barcode_image'] = $barcodeData;
         }
 
         // Update the book
