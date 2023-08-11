@@ -11,6 +11,8 @@ use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
+use function PHPUnit\Framework\isEmpty;
+
 class BookController extends Controller
 {
     /*public function index1(Request $request)
@@ -72,13 +74,14 @@ class BookController extends Controller
         if ($existingBook !== null) {
             return redirect()->back()->withErrors(['ISBN' => 'ERROR: El código ISBN ingresado ya existe.'])->withInput();
         }
-        // Upload the PDF file
-        $pdfFile = $request->file('docpdf');
-        $fileName = $pdfFile->getClientOriginalName();
-        $pdfFile->move(storage_path('app/public/pdfs'), $fileName);
+        if ($request->hasFile('docpdf')) {
+            $pdfFile = $request->file('docpdf');
+            $fileName = $pdfFile->getClientOriginalName();
+            $pdfFile->move(storage_path('app/public/pdfs'), $fileName);
 
-        // Save the PDF file path in the database
-        $validatedData['docpdf'] = $fileName;
+            // Save the PDF file path in the database
+            $validatedData['docpdf'] = $fileName;
+        }
 
         $isbn = $request->input('ISBN');
 
