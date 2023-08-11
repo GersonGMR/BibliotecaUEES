@@ -36,7 +36,7 @@ class LoginController extends Controller
             }
         }
 
-        return redirect()->back()->withErrors(['message' => 'Invalid credentials.'])->withInput();
+        return redirect()->back()->withErrors(['message' => 'Credenciales inválidas'])->withInput();
     }
 
     public function logout()
