@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -111,34 +112,21 @@ class BookController extends Controller
         $validatedData = $request->validate([
             'name' => 'nullable',
             'description' => 'nullable',
-            'docpdf' => 'nullable|file|mimes:pdf',
-            'ISBN' => 'required',
+            'ISBN' => 'nullable',
             'amount' => 'nullable',
             'status' => 'required|boolean',
             // Add validation rules for other fields
         ]);
-
         $isbn = $request->input('ISBN');
+        if (!empty($isbn)) {
 
         $generator = new BarcodeGeneratorPNG();
         $barcodeData = 'data:image/png;base64,' . base64_encode($generator->getBarcode($isbn, $generator::TYPE_EAN_13));
         $validatedData['barcode_image'] = $barcodeData;
-
-        // Handle the file upload and update the 'docpdf' field
-        if ($request->hasFile('docpdf')) {
-            $file = $request->file('docpdf');
-            $fileName = 'docpdf_' . time() . '.' . $file->getClientOriginalExtension();
-
-            // Store the file in the database as a Blob
-            $blobData = file_get_contents($file);
-            $validatedData['docpdf'] = $blobData;
-
-            // Update the filename in the database
-            $validatedData['docpdf_filename'] = $fileName;
         }
 
         // Update the book
-        $book->update($validatedData);
+        $book->save($validatedData);
 
 
         // Redirect to the show page or show success message

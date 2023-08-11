@@ -146,10 +146,6 @@
                     <input type="text" class="form-control" id="description" name="description" rows="3" value="{{ $book->description }}">
                   </div>
                   <div class="input-group input-group-static mb-4">
-                    <label>Documento PDF</label>
-                    <input type="file" class="form-control" id="docpdf" name="docpdf" value="{{ $book->docpdf }}" accept="application/pdf">
-                  </div>
-                  <div class="input-group input-group-static mb-4">
                     <label>ISBN</label>
                     <input type="text" class="form-control" id="ISBN" name="ISBN" value="{{ $book->ISBN }}">
                   </div>
