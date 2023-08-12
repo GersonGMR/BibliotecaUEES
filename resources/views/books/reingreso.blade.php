@@ -151,9 +151,9 @@
                   </div>
                 </form>
                 <br></br>
-                @if ($errors->has('ISBN'))
+                @if ($errors->has('user_email'))
                 <div class="alert alert-danger text-white">
-                  {{ $errors->first('ISBN') }}
+                  {{ $errors->first('user_email') }}
                 </div>
                 @endif
               </div>

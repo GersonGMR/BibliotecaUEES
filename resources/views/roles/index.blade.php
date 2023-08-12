@@ -128,11 +128,6 @@
     <div class="container-fluid py-4">
       <div class="row mt-4">
         <div class="col-lg-11 col-md-6 mb-md-0 mb-4">
-
-          <div>
-            <a href="{{ route('roles.create') }}" class="btn btn-primary">Ingresar nuevo rol</a>
-          </div>
-
           <div>
             <form id="searchForm" method="GET" action="{{ route('roles.index') }}">
               <div class="input-group input-group-outline mb-2">
@@ -157,7 +152,6 @@
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha creacion</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha actualizacion</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Editar</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Eliminar</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -177,14 +171,6 @@
                         <td class="align-middle text-center text-sm">
                           <!-- Edit button -->
                           <a href="{{ route('roles.edit', ['role' => $role->id]) }}" class="btn btn-info btn-sm">Editar</a>
-                        </td>
-                        <td class="align-middle text-center text-sm">
-                          <!-- Delete button -->
-                          <form id="delete-form" action="{{ route('roles.softDelete', $role->id) }}" method="POST" style="display: inline">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete()">Eliminar</button>
-                          </form>
                         </td>
                       </tr>
                       @endforeach

@@ -56,6 +56,14 @@ class UserController extends Controller
             // Add validation rules for other fields
         ]);
 
+        $existingUser = User::where('email', $validatedData['email'])
+            ->whereNotNull('email') // Add this condition to exclude NULL values
+            ->first();
+
+        if ($existingUser !== null) {
+            return redirect()->back()->withErrors(['email' => 'ERROR: El correo electrónico ingresado ya existe.'])->withInput();
+        }
+
         // Hash the password if it is provided
         if ($request->has('password')) {
             $validatedData['password'] = Hash::make($validatedData['password']);
@@ -65,7 +73,7 @@ class UserController extends Controller
         User::create($validatedData);
 
         // Redirect to the index page or show success message
-        return redirect()->route('users.index')->with('success', 'El usuario se insertó correctamente.');
+        return redirect()->route('users.index')->with('success', 'El usuario se registró correctamente.');
     }
 
     public function show(User $user)

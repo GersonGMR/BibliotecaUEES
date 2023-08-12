@@ -15,13 +15,6 @@ use function PHPUnit\Framework\isEmpty;
 
 class BookController extends Controller
 {
-    /*public function index1(Request $request)
-    {
-        // Obtiene todos los libros y los ordena por status en orden descendente
-        $books = Book::orderBy('status', 'desc')->paginate(10); // Ordena por status en orden descendente y aplica paginación, 10 libros por página
-        return view('books.index', ['books' => $books]);
-    }
-    */
     public function index(Request $request)
     {
         $searchQuery = $request->input('search');
@@ -167,23 +160,32 @@ class BookController extends Controller
         $isbn = $request->input('ISBN');
         $userEmail = $request->input('user_email');
 
-        // Find the book by ISBN and increment the stock
-        $book = Book::where('ISBN', $isbn)->first();
-        if ($book) {
-            $book->amount += 1;
-            $book->save();
-        }
-
-        // Find the user by email and get the user ID
+        // Find the user by email
         $user = User::where('email', $userEmail)->first();
         if ($user) {
-            // Find the user's last order and update the return_date
-            $userOrder = Order::where('user_id', $user->id)->latest()->first();
+            // Find the user's last order related to the book
+            $userOrder = Order::where('user_id', $user->id)
+                ->whereHas('orderDetails.book', function ($query) use ($isbn) {
+                    $query->where('ISBN', $isbn);
+                })
+                ->latest()
+                ->first();
+
             if ($userOrder) {
+                // Update the return_date of the user's order
                 $userOrder->return_date = Carbon::now();
                 $userOrder->save();
+                // Find the book by ISBN and increment the stock
+                $book = Book::where('ISBN', $isbn)->first();
+                if ($book) {
+                    $book->amount += 1;
+                    $book->save();
+                }
+            } else {
+                return redirect()->back()->withErrors(['user_email' => 'No se encontró una orden válida para este usuario y libro'])->withInput();
             }
         }
+
         return redirect()->route('books.index')->with('success', 'Reingreso exitoso');
     }
 

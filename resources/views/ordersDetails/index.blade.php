@@ -170,8 +170,6 @@
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cantidad</th>
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha creacion</th>
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha actualizacion</th>
-                                                <!--<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Editar</th>-->
-                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Eliminar</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -187,14 +185,6 @@
                                                      Edit button 
                                                     <a href="{{ route('ordersDetails.edit', ['orderdetail' => $orderdetail->id]) }}" class="btn btn-info btn-sm">Editar</a>
                                                 </td>-->
-                                                <td class="align-middle text-center text-sm">
-                                                    <!-- Delete button -->
-                                                    <form id="delete-form" action="{{ route('ordersDetails.softDelete', $orderdetail->id) }}" method="POST" style="display: inline">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirmDelete()">Eliminar</button>
-                                                    </form>
-                                                </td>
                                             </tr>
                                             @endforeach
                                         </tbody>

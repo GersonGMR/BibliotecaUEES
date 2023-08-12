@@ -16,6 +16,7 @@
     <p>Email de usuario: {{ $userEmail }}</p>
     <p>Nombre libro: {{ $book->name }}</p>
     <p>Descripción: {{ $book->description }}</p>
+    <p>Fecha alquiler: {{ date('Y-m-d') }}</p>
     <img src="{{ $book->barcode_image }}" alt="Barcode">
     <!-- Add any other data you want to include in the alquiler voucher -->
 

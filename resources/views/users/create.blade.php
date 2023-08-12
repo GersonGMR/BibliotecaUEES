@@ -168,6 +168,12 @@
                     <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Registrar usuario</button>
                   </div>
                 </form>
+                <br></br>
+                @if ($errors->has('email'))
+                <div class="alert alert-danger text-white">
+                  {{ $errors->first('email') }}
+                </div>
+                @endif
               </div>
             </div>
           </div>
