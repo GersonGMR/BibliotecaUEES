@@ -166,6 +166,7 @@
                                             <tr>
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id Orden</th>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Usuario</th>
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre libro</th>
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cantidad</th>
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha creacion</th>
@@ -177,6 +178,7 @@
                                             <tr>
                                                 <td class="align-middle text-center text-sm">{{ $orderdetail->id }}</td>
                                                 <td class="align-middle text-center text-sm">{{ $orderdetail->order_id }}</td>
+                                                <td class="align-middle text-center text-sm">{{ $orderdetail->order->user->email }}</td>
                                                 <td class="align-middle text-center text-sm">{{ $orderdetail->book->name }}</td>
                                                 <td class="align-middle text-center text-sm">{{ $orderdetail->amount }}</td>
                                                 <td class="align-middle text-center text-sm">{{ $orderdetail->created_at }}</td>

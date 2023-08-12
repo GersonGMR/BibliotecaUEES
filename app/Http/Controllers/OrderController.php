@@ -19,6 +19,9 @@ class OrderController extends Controller
             ->orWhereHas('user', function ($query) use ($searchQuery) {
                 $query->whereRaw('LOWER(email) LIKE ?', ['%' . strtolower($searchQuery) . '%']);
             })
+            ->orWhereHas('orderDetails.book', function ($query) use ($searchQuery) {
+                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($searchQuery) . '%']);
+            })
             ->orWhereRaw('LOWER(note) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
             ->orWhereRaw('LOWER(quantity) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
             ->orWhereRaw('LOWER(return_date) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
@@ -33,6 +36,7 @@ class OrderController extends Controller
             ->orWhereRaw('LOWER(created_at) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
             ->orWhere('id', 'like', "%$searchQuery%")
             ->orderBy('created_at', 'desc')
+            ->with('orderDetails.book') // Eager load the related book
             ->paginate(10);
 
         return view('orders.index', compact('orders'));
@@ -116,6 +120,4 @@ class OrderController extends Controller
         // Redirect to the index page or show success message
         return redirect()->route('orders.index')->with('success', 'Libro eliminado correctamente.');
     }
-
-    
 }

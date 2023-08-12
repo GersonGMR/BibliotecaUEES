@@ -20,6 +20,8 @@ class OrderDetailController extends Controller
             ->orWhereRaw('LOWER(amount) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
             ->orWhereRaw('LOWER(created_at) LIKE ?', ['%' . strtolower($searchQuery) . '%'])
             ->orWhere('id', 'like', "%$searchQuery%")
+            ->orderBy('created_at', 'desc')
+            ->with(['order.user'])
             ->paginate(10);
 
         return view('ordersDetails.index', compact('ordersdetails'));
@@ -93,5 +95,4 @@ class OrderDetailController extends Controller
         // Redirect to the index page or show success message
         return redirect()->route('ordersDetails.index')->with('success', 'Orden eliminado correctamente.');
     }
-
 }

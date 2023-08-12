@@ -166,6 +166,7 @@
                       <tr>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">email usuario</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre libro</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nota</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cantidad</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha de reingreso</th>
@@ -180,6 +181,11 @@
                       <tr>
                         <td class="align-middle text-center text-sm">{{ $order->id }}</td>
                         <td class="align-middle text-center text-sm">{{ $order->user->email }}</td>
+                        <td class="align-middle text-center text-sm">
+                          @if ($order->orderDetails->isNotEmpty())
+                          {{ $order->orderDetails->first()->book->name }}
+                          @endif
+                        </td>
                         <td class="align-middle text-center text-sm">{{ $order->note }}</td>
                         <td class="align-middle text-center text-sm">{{ $order->quantity }}</td>
                         <td class="align-middle text-center text-sm">{{ $order->return_date }}</td>
