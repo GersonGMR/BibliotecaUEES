@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Role;
 
 class UserController extends Controller
 {
@@ -36,7 +37,8 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('users.create');
+        $roles = Role::all();
+        return view('users.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -46,11 +48,11 @@ class UserController extends Controller
             'role_id' => 'required',
             'first_name' => 'nullable',
             'last_name' => 'nullable',
-            'adress' => 'required',
-            'phone' => 'required',
-            'email' => 'nullable',
+            'adress' => 'nullable',
+            'phone' => 'nullable',
+            'email' => 'required',
             'status' => 'nullable',
-            'password' => 'nullable',
+            'password' => 'required',
             'created_at' => 'nullable',
             'updated_at' => 'nullable',
             // Add validation rules for other fields
@@ -83,7 +85,9 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return view('users.edit', ['user' => $user]);
+        $roles = Role::all();
+
+        return view('users.edit', ['user' => $user, 'roles' => $roles]);
     }
 
     public function update(Request $request, User $user)
@@ -111,7 +115,7 @@ class UserController extends Controller
         $user->update($validatedData);
 
         // Redirect to the show page or show success message
-        return redirect()->route('users.index', $user)->with('success', 'El usuario se actualizó correctamente');
+        return redirect()->route('users.index')->with('success', 'El usuario se actualizó correctamente');
     }
 
     public function softDelete(User $user)

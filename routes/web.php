@@ -40,6 +40,7 @@ Route::middleware('role:2')->group(function () {
     Route::put('/books/{book}/soft-delete', [BookController::class, 'softDelete'])->name('books.softDelete');
     Route::post('/process-reingreso', [BookController::class, 'processReingreso'])->name('processReingreso');
     Route::get('/reingreso', [BookController::class, 'showReingresoForm'])->name('books.reingreso');
+    Route::get('books/image/{book}', [BookController::class, 'showImage'])->name('books.image');
 
 
     //Home Controller

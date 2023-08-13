@@ -50,7 +50,7 @@ class BookController extends Controller
         $validatedData = $request->validate([
             'name' => 'required',
             'description' => 'nullable',
-            'img' => 'nullable',
+            'img' => 'nullable', // Validate image file
             'ISBN' => 'nullable',
             'amount' => 'nullable',
             'status' => 'nullable',
@@ -172,9 +172,15 @@ class BookController extends Controller
                 ->first();
 
             if ($userOrder) {
-                // Update the return_date of the user's order
+                if ($userOrder->status === 0) {
+                    return redirect()->back()->withErrors(['user_email' => 'Esta orden ya fue reingresada'])->withInput();
+                }
+
+                // Update the return_date and status of the user's order
                 $userOrder->return_date = Carbon::now();
+                $userOrder->status = 0;
                 $userOrder->save();
+
                 // Find the book by ISBN and increment the stock
                 $book = Book::where('ISBN', $isbn)->first();
                 if ($book) {
@@ -192,5 +198,15 @@ class BookController extends Controller
     public function showReingresoForm()
     {
         return view('books.reingreso');
+    }
+
+    public function showImage($id)
+    {
+        $book = Book::findOrFail($id);
+
+        $imagePath = $book->image;
+        $imageContents = Storage::disk('public')->get($imagePath);
+
+        return response($imageContents)->header('Content-Type', 'image');
     }
 }

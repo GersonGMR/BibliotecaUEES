@@ -136,33 +136,40 @@
                 <form role="form" action="{{ route('users.store') }}" method="POST">
                   @csrf
                   <label class="form-label">Usuarios</label>
-                  <div class="input-group input-group-outline mb-3">
+                  <div class="mb-3">
                     <label class="form-label">Rol</label>
-                    <input type="text" class="form-control" id="role_id" name="role_id" required>
+                    <div class="form-group">
+                      <select class="form-select form-select-sm" id="role_id" name="role_id" required>
+                        <option value="" disabled selected>Selecciona un rol</option> <!-- Placeholder option -->
+                        @foreach($roles as $role)
+                        <option value="{{ $role->id }}">{{ $role->role_name }}</option>
+                        @endforeach
+                      </select>
+                    </div>
                   </div>
                   <div class="input-group input-group-outline mb-3">
                     <label class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="first_name" name="first_name" >
+                    <input type="text" class="form-control" id="first_name" name="first_name" required>
                   </div>
                   <div class="input-group input-group-outline mb-3">
                     <label class="form-label">Apellido</label>
-                    <input type="text" class="form-control" id="last_name" name="last_name" >
+                    <input type="text" class="form-control" id="last_name" name="last_name" required>
                   </div>
                   <div class="input-group input-group-outline mb-3">
                     <label class="form-label">Direccion</label>
-                    <input type="text" class="form-control" id="adress" name="adress" >
+                    <input type="text" class="form-control" id="adress" name="adress">
                   </div>
                   <div class="input-group input-group-outline mb-3">
                     <label class="form-label">Celular</label>
-                    <input type="text" class="form-control" id="phone" name="phone" >
+                    <input type="text" class="form-control" id="phone" name="phone">
                   </div>
                   <div class="input-group input-group-outline mb-3">
                     <label class="form-label">Email</label>
-                    <input type="text" class="form-control" id="email" name="email" >
+                    <input type="text" class="form-control" id="email" name="email" required>
                   </div>
                   <div class="input-group input-group-outline mb-3">
                     <label class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="password" name="password" >
+                    <input type="password" class="form-control" id="password" name="password" required>
                   </div>
                   <div class="text-center">
                     <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Registrar usuario</button>

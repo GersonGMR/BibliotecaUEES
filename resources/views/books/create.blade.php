@@ -144,13 +144,7 @@
                     <label class="form-label">Descripcion</label>
                     <input type="text" class="form-control" id="description" name="description" rows="3" required>
                   </div>
-                  <div class="mb-3">
-                    <label for="img" class="form-label">Imagen</label>
-                    <div class="form-group">
-                      <input type="file" id="img" aria-label="File browser example" name="img">
-                    </div>
-
-                  </div>
+                
                   <div class="mb-3">
                     <label for="img" class="form-label">Documento PDF</label>
                     <div class="form-group">

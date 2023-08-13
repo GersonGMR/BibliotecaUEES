@@ -49,7 +49,7 @@
     <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
       <ul class="navbar-nav">
 
-      <li class="nav-item">
+        <li class="nav-item">
           <a class="nav-link text-white active bg-gradient-primary" href="{{ route('estudiante.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
@@ -133,7 +133,7 @@
                       <tr>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Descripcion</th>
-                        <!--<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Imagen</th>-->
+
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Stock</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Descargar</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Alquilar</th>
@@ -144,7 +144,7 @@
                       <tr>
                         <td class="align-middle text-center text-sm">{{ $book->name }}</td>
                         <td class="align-middle text-center text-sm">{{ $book->description }}</td>
-                        <!--<td class="align-middle text-center text-sm">{{ $book->img }}</td>-->
+
                         <td class="align-middle text-center text-sm">{{ $book->amount }}</td>
                         <td class="align-middle text-center text-sm">
                           @if ($book->docpdf)
@@ -155,8 +155,12 @@
                           @endif
                         </td>
                         <td class="align-middle text-center text-sm">
+                          @if ($book->ISBN)
                           <!-- Alquilar button -->
                           <a href="{{ route('voucher.index', ['book' => $book->id]) }}" class="btn btn-info btn-sm">Alquilar</a>
+                          @else
+                          <span class="text-muted">Este libro solo es digital</span>
+                          @endif
                         </td>
                       </tr>
                       @endforeach

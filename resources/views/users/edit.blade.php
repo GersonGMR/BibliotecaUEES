@@ -137,9 +137,18 @@
                   @csrf
                   @method('PUT')
                   <label class="form-label" style="font-size: large;">Usuarios</label>
-                  <div class="input-group input-group-static mb-4">
-                    <label>Rol</label>
-                    <input type="text" class="form-control" id="role_id" name="role_id" value="{{ $user->role_id }}">
+                  <div class="mb-3">
+                    <label class="form-label">Rol</label>
+                    <div class="form-group">
+                      <select class="form-select form-select-sm" id="role_id" name="role_id" required>
+                        <option value="{{ $user->role_id }}" selected>{{ $user->role->role_name }}</option>
+                        @foreach($roles as $role)
+                        @if ($role->id != $user->role_id)
+                        <option value="{{ $role->id }}">{{ $role->role_name }}</option>
+                        @endif
+                        @endforeach
+                      </select>
+                    </div>
                   </div>
                   <div class="input-group input-group-static mb-4">
                     <label>Nombre</label>
